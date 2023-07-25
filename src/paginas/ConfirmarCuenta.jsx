@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 const ConfirmarCuenta = () => {
   return (
     <>
-      <h1 className="h-screen text-slate-200 font-black text-6xl capitalize text-center">
+      <h1 className="h-screen text-slate-200 font-black text-4xl capitalize text-center">
       Confirma tu cuenta
       </h1>
 

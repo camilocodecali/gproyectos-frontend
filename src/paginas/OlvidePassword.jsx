@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 const OlvidePassword = () => {
   return (
     <>
-      <h1 className="text-slate-200 font-black text-6xl capitalize text-center">
+      <h1 className="text-slate-200 font-black text-4xl capitalize text-center">
       Recupera tu acceso
       </h1>
       <form className=" shadow rounded-lg p-32">

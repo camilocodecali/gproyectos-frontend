@@ -7,14 +7,14 @@ const CARGO = ["Lider", "Colaborador", "Admin", "Cliente"]
 
 const Registrar = () => {
 
-  const [ nombre, setNombre("")
-  const [ email, setEmail("")
-  const [ telefono, setTelefono("")
-  const [ cargo, setCargo("")
-  const [ fechaIngreso, setFechaIngreso("")
-  const [ identificacion, setIdentificacion("")
-  const [ password, setPassword("")
-  const [ repetirPassword, setRepetirPassword("")
+  const [ nombre, setNombre ] = useState("")
+  const [ email, setEmail ] = useState("")
+  const [ telefono, setTelefono ] = useState("")
+  const [ cargo, setCargo ] = useState("")
+  const [ fechaIngreso, setFechaIngreso ] = useState("")
+  const [ identificacion, setIdentificacion ] = useState("")
+  const [ password, setPassword ] = useState("")
+  const [ repetirPassword, setRepetirPassword ] = useState("")
   const [alerta, setAlerta] = useState({})
 
   const handleSubmit = async e => {
@@ -50,12 +50,12 @@ const Registrar = () => {
     setAlerta({})
     //Crear un usuario nuevo
     try {
-      const { data } = await axios.post('http://localhost:4000/api/usuarios', {nombre, email, telefono, cargo, fechaIngreso, identificacion, password});
+      const { data } = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/usuarios`, {nombre, email, telefono, cargo, fechaIngreso, identificacion, password});
       setAlerta({
         msg:data.msg,
         error: false
       })
-
+      
       setNombre('');
       setEmail("");
       setTelefono("");
@@ -78,12 +78,12 @@ const Registrar = () => {
 
   return (
     <>
-      <h1 className="text-slate-200 font-black text-6xl capitalize text-center">
+      <h1 className="text-slate-200 font-black text-4xl capitalize text-center">
         Registrate en la App
       </h1>
       {msg && <Alerta alerta={alerta}/>}
       <form 
-          className="my-10 shadow rounded-lg p-10"
+          className="my-5 shadow rounded-lg p-10"
           onSubmit={handleSubmit}
       >
         <div className="my-5">
