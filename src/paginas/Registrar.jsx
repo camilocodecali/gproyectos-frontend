@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import Alerta from "../components/Alerta";
-import axios from "axios"
+import clienteAxios from "../config/clienteAxios";
 
 const CARGO = ["Lider", "Colaborador", "Admin", "Cliente"]
 
@@ -50,7 +50,7 @@ const Registrar = () => {
     setAlerta({})
     //Crear un usuario nuevo
     try {
-      const { data } = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/usuarios`, {nombre, email, telefono, cargo, fechaIngreso, identificacion, password});
+      const { data } = await clienteAxios.post(`/usuarios`, {nombre, email, telefono, cargo, fechaIngreso, identificacion, password});
       setAlerta({
         msg:data.msg,
         error: false
@@ -74,7 +74,7 @@ const Registrar = () => {
 
   }
 
-  const {msg} = alerta;
+  const {msg} = alerta
 
   return (
     <>
@@ -128,7 +128,7 @@ const Registrar = () => {
           <input
             id="telefono"
             type="number"
-            placeholder="Email de registro"
+            placeholder="Teléfono de registro"
             className="w-full mt-3 p-3 border text-white rounded-xl border-white bg-transparent"
             value={telefono}
             onChange={e => setTelefono(e.target.value)}
