@@ -1,4 +1,6 @@
 import { useState } from "react"
+import useProyectos from "../hooks/useProyectos"
+import Alerta from "./Alerta"
 
 const ESTADO = [ "Finalizado", "Progreso", "Retrasado"]
 
@@ -13,8 +15,40 @@ const FormularioProyecto = () => {
     const [estado, setEstado ] = useState('')
     const [carpetaProyecto, setCarpetaProyecto ] = useState('')
 
+    const { mostrarAlerta, alerta, submitProyecto } = useProyectos();
+
+    const handleSubmit = async e => {
+        e.preventDefault();
+
+        if([nombre, descripcion, fechaInicio ,fechaEntrega, cliente, lider, estado, carpetaProyecto].includes('')){
+            mostrarAlerta({
+                msg: 'Todos los campos son Obligatorios',
+                error: true
+            });
+            return
+        }
+
+        // Pasar datos al provider
+        //TODO:falta agregar el cliente y tareas
+        await submitProyecto({ nombre, descripcion, fechaInicio ,fechaEntrega, lider, estado, carpetaProyecto })
+        setNombre('');
+        setDescripcion('');
+        setFechaInicio('');
+        setFechaEntrega('');
+        setCliente('');
+        setLider('');
+        setEstado('');
+        setCarpetaProyecto('');
+    };
+
+    const {msg} = alerta;
+
   return (
-    <form className="bg-white shadow py-10 px-5 w-full h-full rounded-lg">
+    <form 
+        className="bg-white shadow py-10 px-5 w-full h-full rounded-lg"
+        onSubmit={handleSubmit}
+    >
+    {msg && <Alerta alerta={alerta}/>}
         <div className="mb-5 grid grid-cols-2 gap-4">
             <div>
                 <label
