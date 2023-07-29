@@ -26,7 +26,7 @@ if(cargando){
           <div className="bg-gray-100">
             <div className="md:flex md:min-h-screen">
               <Sidebar></Sidebar>
-              <main className="p-10">
+              <main className="md:w-screen p-10">
               <Header />
                 <Outlet></Outlet>
               </main>
