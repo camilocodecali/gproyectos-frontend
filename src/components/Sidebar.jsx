@@ -12,8 +12,9 @@ const Sidebar = () => {
       <div className="px-5">
         <Link className="block mb-5" to='/proyectos'>Inicio</Link>
         <Link className="block mb-5" to='/proyectos'>Proyectos</Link>
-        <Link className="block mb-5" to='/'>Clientes</Link>
-        <Link className="block mb-5" to='/'>Usuarios</Link>
+        <Link className="block mb-5 ml-4" to='/proyectos/asignados'>Asignados</Link>
+        <Link className="block mb-5" to='/clientes'>Clientes</Link>
+        <Link className="block mb-5" to='/usuarios'>Usuarios</Link>
         <Link className="block mb-5" to='/'>Cerrar sesión</Link>
       </div>
 

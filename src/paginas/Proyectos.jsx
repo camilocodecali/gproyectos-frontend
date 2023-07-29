@@ -27,7 +27,9 @@ const Proyectos = () => {
                 proyectos.map(proyecto =>(
                   <TableProyectos key={proyecto._id} proyecto={proyecto} />
                 ))
-              : <p className="mt-5 text-center text-gray-600 uppercase p-5">No hay proyectos aún</p>}
+              : <tr>
+                    <td className="border-b-2 border-slate-300 p-3">NO HAY PROYECTOS AUN</td>
+                </tr>}
             </tbody>
         </table>
       </div>
