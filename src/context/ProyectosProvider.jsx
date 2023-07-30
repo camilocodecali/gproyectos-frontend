@@ -83,7 +83,7 @@ const ProyectosProvider = ({children}) => {
             }
 
             const { data } = await clienteAxios.post('/proyectos', proyecto, config)
-            console.log(data);
+            setProyectos([...proyectos, data])
             setAlerta({
                 msg: ' Proyecto creado correctamente',
                 error: false

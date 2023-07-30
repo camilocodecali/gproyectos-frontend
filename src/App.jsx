@@ -12,6 +12,7 @@ import NuevoProyecto from "./paginas/NuevoProyecto"
 import ProyectosAsignados from "./paginas/ProyectosAsignados"
 import Clientes from "./paginas/Clientes"
 import Usuarios from "./paginas/Usuarios"
+import Proyecto from "./paginas/Proyecto"
 
 import { AuthProvider } from "./context/AuthProvider"
 import { ProyectosProvider } from "./context/ProyectosProvider"
@@ -34,8 +35,9 @@ function App() {
 
             <Route path="/proyectos" element={<RutaProtegida/>}>
               <Route index element={<Proyectos/>} />
-              <Route path="crear-proyecto" element={<NuevoProyecto/>} />
               <Route path="asignados" element={<ProyectosAsignados />} />
+              <Route path="crear-proyecto" element={<NuevoProyecto/>} />
+              <Route path=":id" element={<Proyecto />} />
             </Route>
 
             <Route path="/clientes" element={<RutaProtegida/>}>
