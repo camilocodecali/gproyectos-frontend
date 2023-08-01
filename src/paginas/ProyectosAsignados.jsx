@@ -1,7 +1,6 @@
 import useProyectos from "../hooks/useProyectos";
 import { Link } from "react-router-dom";
 import TableProyectos from "../components/TableProyectos";
-import Alerta from "../components/Alerta";
 
 const ProyectosAsignados = () => {
   const { proyectosAsignados } = useProyectos();
@@ -22,13 +21,13 @@ const ProyectosAsignados = () => {
             Buscar por: Título, cliente o fecha</button>
         </div>
         <div className="flex justify-between mb-10">
-          <div className="flex gap-4">
-            Filtrar por:
-            <button className="bg-green-300 text-green-950 px-4 text-sm h-6 rounded-lg cursor-pointer font-bold">Finalizado</button>
-            <button className="bg-orange-300 text-orange-800 px-4 text-sm h-6 rounded-lg cursor-pointer font-bold">Progreso</button>
-            <button className="bg-red-300 text-red-800 px-4 text-sm h-6 rounded-lg cursor-pointer font-bold">Retrasado</button>
+          <div className="block md:flex  gap-4">
+            <p>Filtrar por:</p>
+            <button className="bg-green-300 text-green-950 px-4 text-sm h-6 rounded-lg cursor-pointer font-bold mb-1 md:mb-0">Finalizado</button>
+            <button className="bg-orange-300 text-orange-800 px-4 text-sm h-6 rounded-lg cursor-pointer font-bold mb-1 md:mb-0">Progreso</button>
+            <button className="bg-red-300 text-red-800 px-4 text-sm h-6 rounded-lg cursor-pointer font-bold mb-1 md:mb-0">Retrasado</button>
           </div>
-          <div className="flex gap-4 align-middle">
+          <div className="block md:flex gap-4 align-middle">
             Ordenar por:
             <form>
               <select className="border border-slate-400 px-4 py-1 rounded-lg">
@@ -37,30 +36,32 @@ const ProyectosAsignados = () => {
             </form>
           </div>
         </div>
-        <table className="table-auto w-full border-collapse text-left">
-          <thead>
-            <tr>
-              <th>Título</th>
-              <th>Fecha de Inicio</th>
-              <th>Cliente</th>
-              <th>Líder de proyecto</th>
-              <th>Estado</th>
-              <th>Fecha de finalización</th>
-              <th>Acciones</th>
-            </tr>
-          </thead>
-          <tbody>
-            {proyectosAsignados.length ? (
-                proyectosAsignados.map((proyecto) => (
-                <TableProyectos key={proyecto._id} proyecto={proyecto} />
-              ))
-            ) : (
-                <tr>
-                    <td className="border-b-2 border-slate-300 p-3">NO HAY PROYECTOS AUN</td>
-                </tr>
-            )}
-          </tbody>
-        </table>
+        <div className="relative overflow-x-auto">
+          <table className="table-auto w-full border-collapse text-left">
+            <thead>
+              <tr>
+                <th>Título</th>
+                <th>Fecha de Inicio</th>
+                <th>Cliente</th>
+                <th>Líder de proyecto</th>
+                <th>Estado</th>
+                <th>Fecha de finalización</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              {proyectosAsignados.length ? (
+                  proyectosAsignados.map((proyecto) => (
+                  <TableProyectos key={proyecto._id} proyecto={proyecto} />
+                ))
+              ) : (
+                  <tr>
+                      <td className="border-b-2 border-slate-300 p-3">NO HAY PROYECTOS AUN</td>
+                  </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
       </div>
       <div className="fixed bottom-10 right-10">
         <Link

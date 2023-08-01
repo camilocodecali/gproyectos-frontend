@@ -1,13 +1,18 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
+import { useParams } from "react-router-dom"
 import useProyectos from "../hooks/useProyectos"
 import Alerta from "./Alerta"
 
 const ESTADO = [ "Finalizado", "Progreso", "Retrasado"]
+const CATEGORIA = [ "Web", "Diseño", "Redes Sociales"]
 
 const FormularioProyecto = () => {
+    
 
+    const [id, setId] = useState(null)
     const [nombre, setNombre ] = useState('')
     const [descripcion, setDescripcion ] = useState('')
+    const [categoria, setCategoria ] = useState('')
     const [fechaInicio, setFechaInicio ] = useState('')
     const [fechaEntrega, setFechaEntrega ] = useState('')
     const [cliente, setCliente ] = useState('')
@@ -15,12 +20,30 @@ const FormularioProyecto = () => {
     const [estado, setEstado ] = useState('')
     const [carpetaProyecto, setCarpetaProyecto ] = useState('')
 
-    const { mostrarAlerta, alerta, submitProyecto } = useProyectos();
+    const params = useParams()
+
+    const { mostrarAlerta, alerta, submitProyecto, proyecto } = useProyectos();
+
+    useEffect(()=>{
+        if(params.id && proyecto.nombre){
+            setId(proyecto._id)
+            setNombre(proyecto.nombre)
+            setDescripcion(proyecto.descripcion)
+            setCategoria(proyecto.categoria)
+            setFechaInicio(proyecto.fechaInicio?.split('T')[0])
+            setFechaEntrega(proyecto.fechaEntrega?.split('T')[0])
+            setLider(proyecto.lider)
+            setEstado(proyecto.estado)
+            setCarpetaProyecto(proyecto.carpetaProyecto)
+        }else{
+            console.log("nuevo");
+        }
+    }, [proyecto])
 
     const handleSubmit = async e => {
         e.preventDefault();
 
-        if([nombre, descripcion, fechaInicio ,fechaEntrega, cliente, lider, estado, carpetaProyecto].includes('')){
+        if([nombre, descripcion , fechaInicio, cliente ,fechaEntrega, lider, estado, carpetaProyecto].includes('')){
             mostrarAlerta({
                 msg: 'Todos los campos son Obligatorios',
                 error: true
@@ -30,7 +53,8 @@ const FormularioProyecto = () => {
 
         // Pasar datos al provider
         //TODO:falta agregar el cliente y tareas
-        await submitProyecto({ nombre, descripcion, fechaInicio ,fechaEntrega, lider, estado, carpetaProyecto })
+        await submitProyecto({ id, nombre, descripcion, categoria, fechaInicio ,fechaEntrega, lider, estado, carpetaProyecto })
+        setId(null)
         setNombre('');
         setDescripcion('');
         setFechaInicio('');
@@ -97,16 +121,16 @@ const FormularioProyecto = () => {
             <div>
                 <label
                     className="text-gray-700 capitalize font-bold text-sm"
-                    htmlFor="estado"
-                >Estado</label>
+                    htmlFor="categoria"
+                >Categoría</label>
                 <select
-                    id="estado"
+                    id="categoria"
                     className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-lg"
-                    value={estado}
-                    onChange={e => setEstado(e.target.value)}
+                    value={categoria}
+                    onChange={e => setCategoria(e.target.value)}
                 >
                 <option value="">--Seleccionar--</option>
-                {ESTADO.map(opcion =>(
+                {CATEGORIA.map(opcion =>(
                     <option key={opcion} value={opcion}>{opcion}</option>
                 ))}
                 </select>
@@ -140,7 +164,24 @@ const FormularioProyecto = () => {
                 />
             </div>
         </div>
-        <div className="mb-5">
+        <div className="mb-5 grid grid-cols-2 gap-4">
+            <div>
+                <label
+                    className="text-gray-700 capitalize font-bold text-sm"
+                    htmlFor="estado"
+                >Estado</label>
+                <select
+                    id="estado"
+                    className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-lg"
+                    value={estado}
+                    onChange={e => setEstado(e.target.value)}
+                >
+                <option value="">--Seleccionar--</option>
+                {ESTADO.map(opcion =>(
+                    <option key={opcion} value={opcion}>{opcion}</option>
+                ))}
+                </select>
+            </div>
             <div>
                 <label
                     className="text-gray-700 capitalize font-bold text-sm"
@@ -174,7 +215,7 @@ const FormularioProyecto = () => {
             <button className="border-gray-300 border-2 rounded-lg px-10 py-2">Cancelar</button>
             <input 
             type="submit"
-            value="+ Crear"
+            value={id ? 'Editar' : 'Crear Proyecto'}
             className="bg-principal hover:bg-principalHover px-10 py-2 capitalize font-bold text-white rounded-lg cursor-pointer transition-colors"
             />
         </div>

@@ -1,10 +1,101 @@
+import { useParams, Link } from 'react-router-dom'
+import { useEffect } from "react"
+import useProyectos from '../hooks/useProyectos'
+import { formatearFecha } from '../helpers/formatearFecha'
+import whatsapp from '/whatsapp.png'
+import correo from '/email.png'
 
 const Proyecto = () => {
+  const params = useParams();
+  const {obtenerProyecto, proyecto, cargando} = useProyectos();
+
+  useEffect(()=>{
+    obtenerProyecto(params.id)
+  }, [])
+
+  const { nombre, estado, cliente, categoria, descripcion, fechaInicio, fechaEntrega, carpetaProyecto } = proyecto
+  console.log(proyecto);
+
+
+if(cargando){
+    return (
+        <div className="sk-chase m-auto">
+            <div className="sk-chase-dot"></div>
+            <div className="sk-chase-dot"></div>
+            <div className="sk-chase-dot"></div>
+            <div className="sk-chase-dot"></div>
+            <div className="sk-chase-dot"></div>
+            <div className="sk-chase-dot"></div>
+        </div>
+    )
+}
+
   return (
-    <div>
-      Proyecto
-    </div>
+    <>
+      <div className='bg-white w-full shadow mt-10 rounded-lg p-5'>
+        <div className='flex justify-between mb-10'>
+          <h1 className='text-3xl'><b>Proyecto:</b> {nombre}</h1>
+          <div className='flex items-center gap-4'>
+            <Link
+              to={`/proyectos/editar/${params.id}`}
+              className='bg-sky-500 py-2 px-4 rounded-lg text-white hover:bg-sky-700 font-bold'
+            >Editar Proyecto</Link>
+            <Link
+              to={`/proyectos/editar/${params.id}`}
+              className='border-2 border-yellow-500 text-yellow-500  py-2 px-4 rounded-lg text-white hover:bg-yellow-500 hover:text-white font-bold'
+            >Editar Estado</Link>
+            <Link
+              to={`/proyectos/editar/${params.id}`}
+              className='border-2 border-red-500 text-red-500  py-2 px-4 rounded-lg text-white hover:bg-red-500 hover:text-white font-bold'
+            >Eliminar</Link>
+          </div>
+        </div>
+        <div className='flex items-center mb-5'>
+          <b className='mr-5'>Estado: </b> <p className={`${estado === "Finalizado" ? 'bg-green-300 text-green-700 font-bold' : estado === "Progreso" ? 'bg-orange-300 text-orange-700 font-bold' : 'bg-red-300 text-red-700 font-bold' } rounded-lg px-4 py-1 text-xs`}>{estado}</p>
+        </div>
+        <div className='grid grid-cols-2 gap-4 mb-5'>
+          <div>
+            <b>Cliente: {cliente}</b>
+          </div>
+          <div>
+            <b>Categoría: {categoria}</b>
+          </div>
+        </div>
+        <div className='mb-5'>
+          <b>Decripción:</b> {descripcion}
+        </div>
+        <div className='grid grid-cols-2 gap-4 mb-5'>
+          <div>
+            <b>Lider de proyecto:</b>
+          </div>
+          <div>
+            <b>Responsables: </b>
+          </div>
+        </div>
+        <div className='grid grid-cols-2 gap-4 mb-5'>
+          <div>
+            <b>Fecha de inicio: </b>{fechaInicio}
+          </div>
+          <div>
+            <b>Fecha de finalización: </b>{fechaEntrega}
+          </div>
+        </div>
+        <div>
+          <b>Carpeta del proyecto:</b> {carpetaProyecto}
+        </div>
+        <div className='flex justify-end mb-5'>
+          
+          <div className='flex items-center gap-2 text-gray-500 hover:text-black'>
+          <b>Compartir:</b>
+          <Link><img src={whatsapp} /></Link>
+          <Link><img src={correo} /></Link>
+          </div>
+        </div>
+      </div>
+
+    </>
   )
 }
 
 export default Proyecto
+
