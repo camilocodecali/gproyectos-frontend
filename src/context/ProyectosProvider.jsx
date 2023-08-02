@@ -13,6 +13,7 @@ const ProyectosProvider = ({children}) => {
     const [proyecto, setProyecto ] = useState({})
     const [alerta, setAlerta] = useState({})
     const [cargando, setCargando] = useState(false)
+    const [modalEliminarProyecto, setModalEliminarProyecto] = useState(false)
 
     const { auth } = useAuth();
 
@@ -167,6 +168,46 @@ const ProyectosProvider = ({children}) => {
         }
     }
 
+    const handleModalEliminarProyecto = proyecto => {
+        setProyecto(proyecto)
+        setModalEliminarProyecto(!modalEliminarProyecto)
+
+    }
+
+    const eliminarProyecto = async () => {
+        try {
+            const token = localStorage.getItem('token');
+            if(!token) return
+            
+            const config = {
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`
+                }
+            }
+
+            const { data } = await clienteAxios.delete(`/proyectos/${proyecto._id}`, config)
+
+            //Sincronizar el state
+            const proyectosActualizados = proyectos.filter(proyectoState => proyectoState._id !== proyecto._id)
+            setProyectos(proyectosActualizados)
+
+            setAlerta({
+                msg: data.msg,
+                error:false
+            })
+
+            setModalEliminarProyecto(false)
+
+            setTimeout(() => {
+                setAlerta({})
+                navigate('/proyectos')
+            }, 2000);
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
   return (
     <ProyectosContext.Provider
         value={{
@@ -176,7 +217,10 @@ const ProyectosProvider = ({children}) => {
             submitProyecto,
             proyectosAsignados,
             obtenerProyecto,
-            proyecto
+            proyecto,
+            handleModalEliminarProyecto,
+            eliminarProyecto,
+            modalEliminarProyecto
         }}
     >
         {children}

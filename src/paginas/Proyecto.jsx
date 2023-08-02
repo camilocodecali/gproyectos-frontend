@@ -4,18 +4,23 @@ import useProyectos from '../hooks/useProyectos'
 import { formatearFecha } from '../helpers/formatearFecha'
 import whatsapp from '/whatsapp.png'
 import correo from '/email.png'
+import Alerta from '../components/Alerta'
+import  ModalEliminarProyecto  from '../components/ModalEliminarProyecto'
 
 const Proyecto = () => {
   const params = useParams();
-  const {obtenerProyecto, proyecto, cargando} = useProyectos();
+  const {obtenerProyecto, proyecto, cargando, alerta, handleModalEliminarProyecto} = useProyectos();
 
   useEffect(()=>{
     obtenerProyecto(params.id)
-  }, [])
+  }, [proyecto])
 
-  const { nombre, estado, cliente, categoria, descripcion, fechaInicio, fechaEntrega, carpetaProyecto } = proyecto
-  console.log(proyecto);
+  const { nombre, estado, cliente, categoria, descripcion, fechaInicio, 
+          fechaEntrega, carpetaProyecto } = proyecto
 
+
+
+const {msg} = alerta;
 
 if(cargando){
     return (
@@ -33,6 +38,7 @@ if(cargando){
   return (
     <>
       <div className='bg-white w-full shadow mt-10 rounded-lg p-5'>
+      {msg && <Alerta alerta={alerta}/> }
         <div className='flex justify-between mb-10'>
           <h1 className='text-3xl'><b>Proyecto:</b> {nombre}</h1>
           <div className='flex items-center gap-4'>
@@ -42,12 +48,12 @@ if(cargando){
             >Editar Proyecto</Link>
             <Link
               to={`/proyectos/editar/${params.id}`}
-              className='border-2 border-yellow-500 text-yellow-500  py-2 px-4 rounded-lg text-white hover:bg-yellow-500 hover:text-white font-bold'
+              className='border-2 border-yellow-500 text-yellow-500  py-2 px-4 rounded-lg  hover:bg-yellow-500 hover:text-white font-bold'
             >Editar Estado</Link>
-            <Link
-              to={`/proyectos/editar/${params.id}`}
-              className='border-2 border-red-500 text-red-500  py-2 px-4 rounded-lg text-white hover:bg-red-500 hover:text-white font-bold'
-            >Eliminar</Link>
+            <button
+              onClick={()=>handleModalEliminarProyecto(proyecto)}
+              className='border-2 border-red-500 text-red-500  py-2 px-4 rounded-lg  hover:bg-red-500 hover:text-white font-bold'
+            >Eliminar</button>
           </div>
         </div>
         <div className='flex items-center mb-5'>
@@ -84,7 +90,6 @@ if(cargando){
           <b>Carpeta del proyecto:</b> {carpetaProyecto}
         </div>
         <div className='flex justify-end mb-5'>
-          
           <div className='flex items-center gap-2 text-gray-500 hover:text-black'>
           <b>Compartir:</b>
           <Link><img src={whatsapp} /></Link>
@@ -92,7 +97,7 @@ if(cargando){
           </div>
         </div>
       </div>
-
+      <ModalEliminarProyecto/>
     </>
   )
 }
