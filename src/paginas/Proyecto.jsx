@@ -11,13 +11,14 @@ const Proyecto = () => {
   const params = useParams();
   const {obtenerProyecto, proyecto, cargando, alerta, handleModalEliminarProyecto} = useProyectos();
 
+  console.log(proyecto);
+
   useEffect(()=>{
     obtenerProyecto(params.id)
-  }, [proyecto])
+  }, [])
 
   const { nombre, estado, cliente, categoria, descripcion, fechaInicio, 
           fechaEntrega, carpetaProyecto } = proyecto
-
 
 
 const {msg} = alerta;
@@ -80,10 +81,10 @@ if(cargando){
         </div>
         <div className='grid grid-cols-2 gap-4 mb-5'>
           <div>
-            <b>Fecha de inicio: </b>{fechaInicio}
+            <b>Fecha de inicio: </b>{fechaInicio?.split('T')[0]}
           </div>
           <div>
-            <b>Fecha de finalización: </b>{fechaEntrega}
+            <b>Fecha de finalización: </b>{fechaEntrega?.split('T')[0]}
           </div>
         </div>
         <div>
@@ -96,6 +97,44 @@ if(cargando){
           <Link><img src={correo} /></Link>
           </div>
         </div>
+      </div>
+
+      
+      <div className="bg-gray-400 shadow mt-10 rounded-lg p-5">
+        <div className="mb-5 flex gap-4 justify-between">
+          <div className='flex'>
+            <h1 className="text-4xl mr-5 text-white">Tareas del Proyectos</h1>
+            <Link to={`/proyectos/crear-tarea/${params.id}`} className="bg-principal hover:bg-principalHover text-white text-lg font-bold py-2 px-8 rounded-lg shadow-lg">+ Crear</Link>
+          </div>
+          <div>
+            <button
+              type="button"
+              className="py-2 px-6 w-full text-left border-2 rounded-2xl text-white flex"
+            >
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
+            </svg>
+
+            Buscar por: Título, cliente o fecha</button>
+          </div>
+        </div>
+        <div className="flex justify-between mb-5">
+          <div className="block md:flex  gap-4">
+            <p className='text-white'>Filtrar por:</p>
+            <button className="bg-green-300 text-green-950 px-4 text-sm h-6 rounded-lg cursor-pointer font-bold mb-1 md:mb-0">Finalizado</button>
+            <button className="bg-orange-300 text-orange-800 px-4 text-sm h-6 rounded-lg cursor-pointer font-bold mb-1 md:mb-0">Progreso</button>
+            <button className="bg-red-300 text-red-800 px-4 text-sm h-6 rounded-lg cursor-pointer font-bold mb-1 md:mb-0">Retrasado</button>
+          </div>
+          <div className="block md:flex gap-4 align-middle text-white">
+            Ordenar por:
+            <form>
+              <select className="border border-white px-4 py-1 rounded-lg text-white bg-transparent">
+                <option>Opcion</option>
+              </select>
+            </form>
+          </div>
+        </div>
+
       </div>
       <ModalEliminarProyecto/>
     </>
