@@ -221,7 +221,15 @@ const ProyectosProvider = ({children}) => {
             }
 
             const { data } = await clienteAxios.post('/tareas', tarea, config)
-            console.log(data);
+            setAlerta({
+                msg: 'Tarea creada correctamente',
+                error: false
+            })
+            setTimeout(() => {
+                setAlerta({})
+                navigate(`/proyectos/${proyecto._id}`)
+            }, 2000);
+
         } catch (error) {
             console.log(error);
         }
