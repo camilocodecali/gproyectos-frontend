@@ -22,6 +22,8 @@ const FormularioTarea = () => {
     const [linkRecursos, setLinkRecursos ] = useState('');
     const [descripcion, setDescripcion ] = useState('');
 
+    //TODO: hay que consultar proyecto por id para traer la informacion del proyecto cuando se recargue la pagina
+
     const handleSubmit = (e) =>{
         e.preventDefault()
         if([nombre,
@@ -37,7 +39,7 @@ const FormularioTarea = () => {
                 })
                 return
             }
-
+            //TODO: hay que consultar responsables para cargarlos en el select
             submitTarea({nombre,
                 fechaInicio,
                 fechaEntrega,

@@ -5,7 +5,7 @@ import TableProyectos from "../components/TableProyectos";
 const Proyectos = () => {
 
   const { proyectos } = useProyectos()
-  console.log(proyectos);
+
   return (
     <>
       <h1 className="text-4xl">Proyectos</h1>
