@@ -6,7 +6,7 @@ const Tarea = ({tarea}) => {
     const {colaboradores, estado, fechaEntrega, fechaInicio, linkRecursos, nombre } = tarea
   
     const handleModalEliminarTarea = (tarea)=> {
-        console.log(tarea);
+        console.log(tarea._id);
     }
 
     return (
@@ -31,13 +31,13 @@ const Tarea = ({tarea}) => {
       </div>
       <div className="flex flex-col gap-4">
           <Link
-            to={`/proyectos/editar/${params.id}`}
+            to={`/proyectos/tarea/${tarea._id}`}
             className="bg-green-500 py-2 px-4 rounded-lg text-white hover:bg-green-700 font-bold text-center"
           >
             Ver Tarea
           </Link>
           <Link
-            to={`/proyectos/editar/${params.id}`}
+            to={`/proyectos/editar-tarea/${tarea._id}`}
             className="border-2 border-yellow-500 text-yellow-500  py-2 px-4 rounded-lg  hover:bg-yellow-500 hover:text-white font-bold"
           >
             Editar Estado

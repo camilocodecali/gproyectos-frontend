@@ -14,6 +14,7 @@ const ProyectosProvider = ({children}) => {
     const [alerta, setAlerta] = useState({})
     const [cargando, setCargando] = useState(false)
     const [modalEliminarProyecto, setModalEliminarProyecto] = useState(false)
+    const [tarea, setTarea] = useState({})
 
     const { auth } = useAuth();
 
@@ -109,6 +110,7 @@ const ProyectosProvider = ({children}) => {
         }
 
     }
+
 
     const nuevoProyecto = async proyecto => {
         try {
@@ -208,6 +210,32 @@ const ProyectosProvider = ({children}) => {
         }
     }
 
+    const obtenerTarea = async id =>{
+        setCargando(true)
+        try {
+            const token = localStorage.getItem('token');
+            if(!token) return
+            
+            const config = {
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`
+                }
+            }
+    
+            const { data } = await clienteAxios(`/tareas/${id}`, config)
+            setTarea(data)
+        } catch (error) {
+            setAlerta({
+                msg: error.response.data.msg,
+                error: true
+            })
+        } finally {
+            setCargando(false)
+
+        }
+    }
+
     const submitTarea = async tarea => {
         try {
             const token = localStorage.getItem('token');
@@ -221,6 +249,10 @@ const ProyectosProvider = ({children}) => {
             }
 
             const { data } = await clienteAxios.post('/tareas', tarea, config)
+            //Agregar tarea al state
+            const proyectoActualizado = {...proyecto}
+            proyectoActualizado.tareas = [...proyecto.tareas, data]
+            setProyecto(proyectoActualizado)
             setAlerta({
                 msg: 'Tarea creada correctamente',
                 error: false
@@ -248,6 +280,8 @@ const ProyectosProvider = ({children}) => {
             handleModalEliminarProyecto,
             eliminarProyecto,
             modalEliminarProyecto,
+            obtenerTarea,
+            tarea,
             submitTarea
         }}
     >
