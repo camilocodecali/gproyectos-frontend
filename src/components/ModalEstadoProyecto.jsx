@@ -6,7 +6,7 @@ import Alerta from "./Alerta";
 const ESTADO = ["Finalizado", "Progreso", "Retrasado"];
 
 const ModalEstadoProyecto = () => {
-  const { modalEstadoProyecto,setModalEstadoProyecto, handleModalEstadoProyecto, proyecto, mostrarAlerta, alerta, submitProyecto } =
+  const { modalEstadoProyecto, handleModalEstadoProyecto, proyecto, mostrarAlerta, alerta, submitProyecto } =
     useProyectos();
 
     const [estado, setEstado ] = useState('')
@@ -25,7 +25,6 @@ const ModalEstadoProyecto = () => {
         //Actualizamos el proyecto
         await submitProyecto({id:_id, nombre, descripcion, categoria, fechaInicio ,fechaEntrega, lider, carpetaProyecto, estado})
         setEstado('');
-        setModalEstadoProyecto(false)
     }
 
   return (

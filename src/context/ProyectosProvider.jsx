@@ -168,6 +168,8 @@ const ProyectosProvider = ({children}) => {
                 navigate('/proyectos');
             }, 2500)
 
+            setModalEstadoProyecto(false)
+
         } catch (error) {
             console.log(error);
         }
@@ -377,8 +379,7 @@ const ProyectosProvider = ({children}) => {
             handleModalEliminarTarea,
             eliminarTarea,
             modalEstadoProyecto,
-            handleModalEstadoProyecto,
-            setModalEstadoProyecto
+            handleModalEstadoProyecto
         }}
     >
         {children}
