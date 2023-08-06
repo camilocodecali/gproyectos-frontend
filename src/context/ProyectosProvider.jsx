@@ -237,6 +237,14 @@ const ProyectosProvider = ({children}) => {
     }
 
     const submitTarea = async tarea => {
+        if (tarea.id) {
+            editarTarea(tarea)
+        }else{
+            nuevaTarea(tarea)
+        }
+        
+    } 
+    const nuevaTarea = async tarea => {
         try {
             const token = localStorage.getItem('token');
             if(!token) return
@@ -265,7 +273,11 @@ const ProyectosProvider = ({children}) => {
         } catch (error) {
             console.log(error);
         }
-    } 
+    }
+
+    const editarTarea = async tarea => {
+        console.log(tarea);
+    }
 
   return (
     <ProyectosContext.Provider
@@ -282,6 +294,7 @@ const ProyectosProvider = ({children}) => {
             modalEliminarProyecto,
             obtenerTarea,
             tarea,
+            setTarea,
             submitTarea
         }}
     >

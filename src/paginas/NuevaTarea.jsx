@@ -5,12 +5,13 @@ import useProyectos from "../hooks/useProyectos"
 
 const NuevaTarea = () => {
 
-  const { obtenerProyecto } = useProyectos()
+  const { obtenerProyecto, setTarea } = useProyectos()
 
   const params = useParams();
 
   useEffect(()=>{
     obtenerProyecto(params.id)
+    setTarea({})
   }, [])
   return (
     <>

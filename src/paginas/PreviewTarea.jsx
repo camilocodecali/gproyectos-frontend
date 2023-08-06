@@ -24,7 +24,7 @@ const PreviewTarea = () => {
         </h1>
         <div className="flex items-center gap-4">
           <Link
-            to={`/proyectos/editar/${params.id}`}
+            to={`/proyectos/editar-tarea/${params.id}`}
             className="bg-sky-500 py-2 px-4 rounded-lg text-white hover:bg-sky-700 font-bold"
           >
             Editar Tarea

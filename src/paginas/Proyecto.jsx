@@ -11,7 +11,7 @@ const Proyecto = () => {
 
   useEffect(() => {
     obtenerProyecto(params.id);
-  }, []);
+  }, [proyecto]);
 
   if (cargando) {
     return (

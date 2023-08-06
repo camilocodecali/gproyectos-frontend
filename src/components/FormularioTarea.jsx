@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import useProyectos from "../hooks/useProyectos";
 import { useParams } from "react-router-dom";
 import Alerta from "./Alerta";
@@ -6,11 +6,11 @@ import Alerta from "./Alerta";
 const ESTADO = ["Finalizado", "Progreso", "Retrasado"];
 
 const FormularioTarea = () => {
-  const { proyecto, submitTarea, mostrarAlerta, alerta } = useProyectos();
+  const { proyecto, submitTarea, mostrarAlerta, alerta, tarea } = useProyectos();
 
-  console.log(proyecto);
   const params = useParams();
 
+  const [id, setId] = useState(null)
   const [nombre, setNombre] = useState("");
   const [colaboradores, setColaboradores] = useState("");
   const [fechaInicio, setFechaInicio] = useState("");
@@ -18,6 +18,30 @@ const FormularioTarea = () => {
   const [estado, setEstado] = useState("");
   const [linkRecursos, setLinkRecursos] = useState("");
   const [descripcion, setDescripcion] = useState("");
+
+  useEffect(()=>{
+    console.log(tarea);
+    if(params.id && tarea.nombre){
+      setId(tarea._id)
+      setNombre(tarea.nombre)
+      setDescripcion(tarea.descripcion)
+      setEstado(tarea.estado)
+      setFechaInicio(tarea.fechaInicio?.split('T')[0])
+      setFechaEntrega(tarea.fechaEntrega?.split('T')[0])
+      setColaboradores(tarea.colaboradores)
+      setLinkRecursos(tarea.linkRecursos)
+    }else{
+      console.log('Nuevo');
+      setId('')
+      setNombre('')
+      setDescripcion('')
+      setEstado('')
+      setFechaInicio('')
+      setFechaEntrega('')
+      setColaboradores('')
+      setLinkRecursos('')
+    }
+  },[tarea])
 
   //TODO: hay que consultar proyecto por id para traer la informacion del proyecto cuando se recargue la pagina
 
@@ -42,6 +66,7 @@ const FormularioTarea = () => {
     }
     //TODO: hay que consultar responsables para cargarlos en el select
     await submitTarea({
+      id,
       nombre,
       fechaInicio,
       fechaEntrega,
@@ -51,6 +76,7 @@ const FormularioTarea = () => {
       proyecto: params.id,
     });
 
+    setId(null)
     setNombre("");
     setColaboradores("");
     setFechaInicio("");
@@ -68,7 +94,6 @@ const FormularioTarea = () => {
       onSubmit={handleSubmit}
     >
       {msg && <Alerta alerta={alerta} />}
-      <h1 className="text-2xl mb-5">Registra una nueva tarea</h1>
       <div className="mb-5 grid grid-cols-2 gap-4">
         <div>
           <label
@@ -215,7 +240,7 @@ const FormularioTarea = () => {
         </button>
         <input
           type="submit"
-          value="Crear Tarea"
+          value={id ? "Editar Tarea": "Crear Tarea"}
           className="bg-principal hover:bg-principalHover px-10 py-2 capitalize font-bold text-white rounded-lg cursor-pointer transition-colors"
         />
       </div>
