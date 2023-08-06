@@ -377,7 +377,8 @@ const ProyectosProvider = ({children}) => {
             handleModalEliminarTarea,
             eliminarTarea,
             modalEstadoProyecto,
-            handleModalEstadoProyecto
+            handleModalEstadoProyecto,
+            setModalEstadoProyecto
         }}
     >
         {children}
