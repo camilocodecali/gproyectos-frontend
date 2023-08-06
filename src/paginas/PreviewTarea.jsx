@@ -1,12 +1,13 @@
 import { useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import useProyectos from "../hooks/useProyectos"
+import ModalEliminarTarea from "../components/ModalEliminarTarea";
 import whatsapp from '/whatsapp.png'
 import correo from '/email.png'
 
 const PreviewTarea = () => {
 
-    const { obtenerTarea, tarea } = useProyectos()
+    const { obtenerTarea, tarea, handleModalEliminarTarea } = useProyectos()
 
     const params = useParams()
     const {nombre, descripcion, estado, proyecto, fechaEntrega, fechaInicio, linkRecursos} = tarea
@@ -15,9 +16,12 @@ const PreviewTarea = () => {
         obtenerTarea(params.id)
     },[])
 
+    console.log(tarea);
+
   return (
-    <div className="bg-white w-full shadow mt-10 rounded-lg p-5">
-     
+    <>
+      <div className="bg-white w-full shadow mt-10 rounded-lg p-5">
+      
       <div className="flex justify-between mb-10">
         <h1 className="text-3xl">
           <b>Tarea:</b> {nombre}
@@ -36,6 +40,7 @@ const PreviewTarea = () => {
             Editar Estado
           </Link>
           <button
+            onClick={() => handleModalEliminarTarea(tarea)}
             className="border-2 border-red-500 text-red-500  py-2 px-4 rounded-lg  hover:bg-red-500 hover:text-white font-bold"
           >
             Eliminar
@@ -94,6 +99,9 @@ const PreviewTarea = () => {
         </div>
       </div>
     </div>
+    <ModalEliminarTarea/>
+    </>
+
   )
 }
 
