@@ -1,13 +1,12 @@
 import { Link, useParams } from "react-router-dom";
 import { formatearFecha } from "../helpers/formatearFecha"
+import useProyectos from "../hooks/useProyectos";
 
 const Tarea = ({tarea}) => {
     const params = useParams()
     const {colaboradores, estado, fechaEntrega, fechaInicio, linkRecursos, nombre } = tarea
-  
-    const handleModalEliminarTarea = (tarea)=> {
-        console.log(tarea._id);
-    }
+
+    const {handleModalEliminarTarea} = useProyectos()
 
     return (
     <div className="border-b p-5 flex justify-between items-center">

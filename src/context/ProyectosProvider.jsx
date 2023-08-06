@@ -16,6 +16,7 @@ const ProyectosProvider = ({children}) => {
     const [modalEliminarProyecto, setModalEliminarProyecto] = useState(false)
     const [tarea, setTarea] = useState({})
     const [modalEliminarTarea, setModalEliminarTarea] = useState(false)
+    const [modalEstadoProyecto, setModalEstadoProyecto] = useState(false)
 
     const { auth } = useAuth();
 
@@ -293,6 +294,7 @@ const ProyectosProvider = ({children}) => {
             const { data } = await clienteAxios.put(`/tareas/${tarea.id}`, tarea, config)
             console.log(data);
             //Sincronizar el state
+
             setAlerta({
                 msg:'Tarea Actualizada correctamente',
                 error: false
@@ -308,12 +310,14 @@ const ProyectosProvider = ({children}) => {
     }
 
     const handleModalEliminarTarea = tarea => {
+        setTarea(tarea)
         setModalEliminarTarea(!modalEliminarTarea)
         console.log(tarea);
 
     }
 
     const eliminarTarea = async tarea => {
+        setCargando(true)
         try {
             const token = localStorage.getItem('token');
             if(!token) return
@@ -340,7 +344,15 @@ const ProyectosProvider = ({children}) => {
 
         } catch (error) {
             console.log(error);
+        }finally{
+            setCargando(false)
         }
+    }
+
+    const handleModalEstadoProyecto = proyecto => {
+        setProyecto(proyecto)
+        setModalEstadoProyecto(!modalEstadoProyecto)
+
     }
 
 
@@ -363,7 +375,9 @@ const ProyectosProvider = ({children}) => {
             submitTarea,
             modalEliminarTarea,
             handleModalEliminarTarea,
-            eliminarTarea
+            eliminarTarea,
+            modalEstadoProyecto,
+            handleModalEstadoProyecto
         }}
     >
         {children}

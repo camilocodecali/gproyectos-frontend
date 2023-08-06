@@ -14,9 +14,7 @@ const PreviewTarea = () => {
 
     useEffect(()=>{
         obtenerTarea(params.id)
-    },[])
-
-    console.log(tarea);
+    },[tarea])
 
   return (
     <>
