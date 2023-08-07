@@ -20,6 +20,7 @@ import PreviewTarea from "./paginas/PreviewTarea"
 
 import { AuthProvider } from "./context/AuthProvider"
 import { ProyectosProvider } from "./context/ProyectosProvider"
+import { UsuarioProvider } from "./context/UsuarioProvider"
 
 function App() {
 
@@ -27,38 +28,40 @@ function App() {
   return (
     <BrowserRouter>
       <AuthProvider>
-        <ProyectosProvider>
-          <Routes>
-            <Route path="/" element={<AuthLayout/>}>
-              <Route index element={<Login/>}/>
-              <Route path="registrar" element={<Registrar/>}/>
-              <Route path="olvide-password" element={<OlvidePassword/>}/>
-              <Route path="olvide-password/:token" element={<NuevaPassword/>}/>
-              <Route path="confirmar/:id" element={<ConfirmarCuenta/>}/>
-            </Route>
+      <UsuarioProvider>
+          <ProyectosProvider>
+            <Routes>
+              <Route path="/" element={<AuthLayout/>}>
+                <Route index element={<Login/>}/>
+                <Route path="registrar" element={<Registrar/>}/>
+                <Route path="olvide-password" element={<OlvidePassword/>}/>
+                <Route path="olvide-password/:token" element={<NuevaPassword/>}/>
+                <Route path="confirmar/:id" element={<ConfirmarCuenta/>}/>
+              </Route>
 
-            <Route path="/proyectos" element={<RutaProtegida/>}>
-              <Route index element={<Proyectos/>} />
-              <Route path="asignados" element={<ProyectosAsignados />} />
-              <Route path="crear-proyecto" element={<NuevoProyecto/>} />
-              <Route path=":id" element={<Proyecto />} />
-              <Route path="editar/:id" element={<EditarProyecto />} />
-              <Route path="tarea/:id" element={<PreviewTarea/>}/>
-              <Route path="crear-tarea/:id" element={<NuevaTarea/>} />
-              <Route path="editar-tarea/:id" element={<EditarTarea/>}/>
-            </Route>
+              <Route path="/proyectos" element={<RutaProtegida/>}>
+                <Route index element={<Proyectos/>} />
+                <Route path="asignados" element={<ProyectosAsignados />} />
+                <Route path="crear-proyecto" element={<NuevoProyecto/>} />
+                <Route path=":id" element={<Proyecto />} />
+                <Route path="editar/:id" element={<EditarProyecto />} />
+                <Route path="tarea/:id" element={<PreviewTarea/>}/>
+                <Route path="crear-tarea/:id" element={<NuevaTarea/>} />
+                <Route path="editar-tarea/:id" element={<EditarTarea/>}/>
+              </Route>
 
-            <Route path="/clientes" element={<RutaProtegida/>}>
-              <Route index element={<Clientes/>} />
-            </Route>
+              <Route path="/clientes" element={<RutaProtegida/>}>
+                <Route index element={<Clientes/>} />
+              </Route>
 
-            
-            <Route path="/usuarios" element={<RutaProtegida/>}>
-              <Route index element={<Usuarios/>} />
-            </Route>
+              
+              <Route path="/usuarios" element={<RutaProtegida/>}>
+                <Route index element={<Usuarios/>} />
+              </Route>
 
-          </Routes>
-        </ProyectosProvider>
+            </Routes>
+          </ProyectosProvider>
+        </UsuarioProvider>
       </AuthProvider>
     </BrowserRouter>
   )

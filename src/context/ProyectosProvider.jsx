@@ -295,7 +295,6 @@ const ProyectosProvider = ({children}) => {
             }
             
             const { data } = await clienteAxios.put(`/tareas/${tarea.id}`, tarea, config)
-            console.log(data);
             //Sincronizar el state
             setModalEstadoTarea(false)
             setAlerta({
@@ -306,7 +305,7 @@ const ProyectosProvider = ({children}) => {
 
             setTimeout(()=>{
                 setAlerta({})
-                navigate(`/proyectos/tarea/${tarea.id}`)
+                navigate(`/proyectos/${proyecto._id}`)
             }, 2500)
         } catch (error) {
             console.log(error);
