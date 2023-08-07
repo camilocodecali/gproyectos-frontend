@@ -23,13 +23,14 @@ const PreviewProyecto = () => {
   const {
     nombre,
     estado,
-    cliente,
     categoria,
+    cliente,
     descripcion,
     fechaInicio,
     fechaEntrega,
     carpetaProyecto,
   } = proyecto;
+
 
   const { msg } = alerta;
 
@@ -90,7 +91,7 @@ const PreviewProyecto = () => {
       </div>
       <div className="grid grid-cols-2 gap-4 mb-5">
         <div>
-          <b>Cliente: {cliente}</b>
+          <b>Cliente: {cliente.nombre}</b>
         </div>
         <div>
           <b>Categoría: {categoria}</b>
