@@ -2,12 +2,13 @@ import { useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import useProyectos from "../hooks/useProyectos"
 import ModalEliminarTarea from "../components/ModalEliminarTarea";
-import whatsapp from '/whatsapp.png'
-import correo from '/email.png'
+import ModalEstadoTarea from "../components/ModalEstadoTarea";
+import whatsapp from '/whatsapp.png';
+import correo from '/email.png';
 
 const PreviewTarea = () => {
 
-    const { obtenerTarea, tarea, handleModalEliminarTarea } = useProyectos()
+    const { obtenerTarea, tarea, handleModalEliminarTarea, handleModalEstadoTarea } = useProyectos()
 
     const params = useParams()
     const {nombre, descripcion, estado, proyecto, fechaEntrega, fechaInicio, linkRecursos} = tarea
@@ -31,12 +32,12 @@ const PreviewTarea = () => {
           >
             Editar Tarea
           </Link>
-          <Link
-            to={`/proyectos/editar/${params.id}`}
+          <button
+            onClick={()=>handleModalEstadoTarea(tarea)}
             className="border-2 border-yellow-500 text-yellow-500  py-2 px-4 rounded-lg  hover:bg-yellow-500 hover:text-white font-bold"
           >
             Editar Estado
-          </Link>
+          </button>
           <button
             onClick={() => handleModalEliminarTarea(tarea)}
             className="border-2 border-red-500 text-red-500  py-2 px-4 rounded-lg  hover:bg-red-500 hover:text-white font-bold"
@@ -97,6 +98,7 @@ const PreviewTarea = () => {
         </div>
       </div>
     </div>
+    <ModalEstadoTarea/>
     <ModalEliminarTarea/>
     </>
 

@@ -6,6 +6,7 @@ import PreviewProyecto from "../components/PreviewProyecto";
 import Tarea from "../components/Tarea";
 import ModalEliminarTarea from "../components/ModalEliminarTarea";
 import ModalEstadoProyecto from "../components/ModalEstadoProyecto";
+import ModalEstadoTarea from "../components/ModalEstadoTarea";
 
 const Proyecto = () => {
   const params = useParams();
@@ -100,6 +101,7 @@ const Proyecto = () => {
           <p className="text-center my-5 p-10">No hay Tareas</p>}
       </div>
       <ModalEstadoProyecto/>
+      <ModalEstadoTarea/>
       <ModalEliminarProyecto />
       <ModalEliminarTarea />
     </>

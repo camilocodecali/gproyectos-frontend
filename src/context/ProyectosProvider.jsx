@@ -17,6 +17,7 @@ const ProyectosProvider = ({children}) => {
     const [tarea, setTarea] = useState({})
     const [modalEliminarTarea, setModalEliminarTarea] = useState(false)
     const [modalEstadoProyecto, setModalEstadoProyecto] = useState(false)
+    const [modalEstadoTarea, setModalEstadoTarea] = useState(false)
 
     const { auth } = useAuth();
 
@@ -296,15 +297,16 @@ const ProyectosProvider = ({children}) => {
             const { data } = await clienteAxios.put(`/tareas/${tarea.id}`, tarea, config)
             console.log(data);
             //Sincronizar el state
-
+            setModalEstadoTarea(false)
             setAlerta({
                 msg:'Tarea Actualizada correctamente',
                 error: false
             })
 
+
             setTimeout(()=>{
                 setAlerta({})
-                navigate('/proyectos')
+                navigate(`/proyectos/tarea/${tarea.id}`)
             }, 2500)
         } catch (error) {
             console.log(error);
@@ -357,6 +359,12 @@ const ProyectosProvider = ({children}) => {
 
     }
 
+    const handleModalEstadoTarea = tarea => {
+        setTarea(tarea)
+        setModalEstadoTarea(!modalEstadoTarea)
+
+    }
+
 
   return (
     <ProyectosContext.Provider
@@ -379,7 +387,9 @@ const ProyectosProvider = ({children}) => {
             handleModalEliminarTarea,
             eliminarTarea,
             modalEstadoProyecto,
-            handleModalEstadoProyecto
+            handleModalEstadoProyecto,
+            modalEstadoTarea,
+            handleModalEstadoTarea
         }}
     >
         {children}

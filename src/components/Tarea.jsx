@@ -6,7 +6,7 @@ const Tarea = ({tarea}) => {
     const params = useParams()
     const {colaboradores, estado, fechaEntrega, fechaInicio, linkRecursos, nombre } = tarea
 
-    const {handleModalEliminarTarea} = useProyectos()
+    const {handleModalEliminarTarea, handleModalEstadoTarea} = useProyectos()
 
     return (
     <div className="border-b p-5 flex justify-between items-center">
@@ -35,12 +35,12 @@ const Tarea = ({tarea}) => {
           >
             Ver Tarea
           </Link>
-          <Link
-            to={`/proyectos/editar-tarea/${tarea._id}`}
+          <button
+            onClick={()=> handleModalEstadoTarea(tarea)}
             className="border-2 border-yellow-500 text-yellow-500  py-2 px-4 rounded-lg  hover:bg-yellow-500 hover:text-white font-bold"
           >
             Editar Estado
-          </Link>
+          </button>
           <button
             onClick={() => handleModalEliminarTarea(tarea)}
             className="border-2 border-red-500 text-red-500  py-2 px-4 rounded-lg  hover:bg-red-500 hover:text-white font-bold"
