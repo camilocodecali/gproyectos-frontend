@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react"
 import { useParams } from "react-router-dom"
 import useProyectos from "../hooks/useProyectos"
+import useAuth from "../hooks/useAuth"
+import useUsuario from "../hooks/useUsuario"
 import Alerta from "./Alerta"
 
 const ESTADO = [ "Finalizado", "Progreso", "Retrasado"]
@@ -24,6 +26,10 @@ const FormularioProyecto = () => {
 
     const { mostrarAlerta, alerta, submitProyecto, proyecto } = useProyectos();
 
+    const {clientes} = useUsuario()
+
+    const {auth} = useAuth()
+
     useEffect(()=>{
         if(params.id && proyecto.nombre){
             setId(proyecto._id)
@@ -43,7 +49,7 @@ const FormularioProyecto = () => {
     const handleSubmit = async e => {
         e.preventDefault();
 
-        if([nombre, descripcion , fechaInicio, cliente ,fechaEntrega, lider, estado, carpetaProyecto].includes('')){
+        if([nombre, descripcion , fechaInicio, cliente ,fechaEntrega, estado, carpetaProyecto].includes('')){
             mostrarAlerta({
                 msg: 'Todos los campos son Obligatorios',
                 error: true
@@ -53,7 +59,7 @@ const FormularioProyecto = () => {
 
         // Pasar datos al provider
         //TODO:falta agregar el cliente y tareas
-        await submitProyecto({ id, nombre, descripcion, categoria, fechaInicio ,fechaEntrega, lider, estado, carpetaProyecto })
+        await submitProyecto({ id, nombre, descripcion, categoria, fechaInicio ,fechaEntrega, lider, estado, carpetaProyecto, cliente })
         setId(null)
         setNombre('');
         setDescripcion('');
@@ -98,8 +104,8 @@ const FormularioProyecto = () => {
                     type="text"
                     className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-lg"
                     placeholder="Seleccione un Lider"
-                    value={lider}
-                    onChange={e => setLider(e.target.value)}
+                    defaultValue={auth?.nombre}
+                    disabled
                 />
             </div>
         </div>
@@ -109,14 +115,17 @@ const FormularioProyecto = () => {
                     className="text-gray-700 capitalize font-bold text-sm"
                     htmlFor="cliente"
                 >Cliente</label>
-                <input
+                <select
                     id="cliente"
-                    type="text"
                     className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-lg"
-                    placeholder="Seleccione un Cliente"
                     value={cliente}
                     onChange={e => setCliente(e.target.value)}
-                />
+                >
+                <option value="">--Seleccionar--</option>
+                {clientes.map(cliente =>(
+                    <option key={cliente._id} value={cliente._id}>{cliente.nombre}</option>
+                ))}
+                </select>
             </div>
             <div>
                 <label

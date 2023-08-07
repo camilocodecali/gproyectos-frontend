@@ -6,6 +6,7 @@ const Proyectos = () => {
 
   const { proyectos } = useProyectos()
 
+
   return (
     <>
       <h1 className="text-4xl">Proyectos</h1>
