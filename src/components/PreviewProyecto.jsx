@@ -1,8 +1,8 @@
 import { useEffect } from "react";
 import useProyectos from "../hooks/useProyectos";
 import { Link, useParams } from "react-router-dom";
-import whatsapp from '/whatsapp.png'
-import correo from '/email.png'
+import whatsapp from "/whatsapp.png";
+import correo from "/email.png";
 import Alerta from "./Alerta";
 
 const PreviewProyecto = () => {
@@ -13,12 +13,8 @@ const PreviewProyecto = () => {
     cargando,
     alerta,
     handleModalEliminarProyecto,
-    handleModalEstadoProyecto
+    handleModalEstadoProyecto,
   } = useProyectos();
-
-  useEffect(() => {
-    obtenerProyecto(params.id);
-  }, []);
 
   const {
     nombre,
@@ -29,8 +25,8 @@ const PreviewProyecto = () => {
     fechaInicio,
     fechaEntrega,
     carpetaProyecto,
+    lider
   } = proyecto;
-
 
   const { msg } = alerta;
 
@@ -62,7 +58,7 @@ const PreviewProyecto = () => {
             Editar Proyecto
           </Link>
           <button
-            onClick={()=> handleModalEstadoProyecto(proyecto)}
+            onClick={() => handleModalEstadoProyecto(proyecto)}
             className="border-2 border-yellow-500 text-yellow-500  py-2 px-4 rounded-lg  hover:bg-yellow-500 hover:text-white font-bold"
           >
             Editar Estado
@@ -91,7 +87,7 @@ const PreviewProyecto = () => {
       </div>
       <div className="grid grid-cols-2 gap-4 mb-5">
         <div>
-          <b>Cliente: {cliente.nombre}</b>
+          <b>Cliente: {cliente?.nombre}</b>
         </div>
         <div>
           <b>Categoría: {categoria}</b>
@@ -102,7 +98,7 @@ const PreviewProyecto = () => {
       </div>
       <div className="grid grid-cols-2 gap-4 mb-5">
         <div>
-          <b>Lider de proyecto:</b>
+          <b>Lider de proyecto:</b> {lider?.nombre}
         </div>
         <div>
           <b>Responsables: </b>

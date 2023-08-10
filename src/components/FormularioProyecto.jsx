@@ -34,6 +34,7 @@ const FormularioProyecto = () => {
         if(params.id && proyecto.nombre){
             setId(proyecto._id)
             setNombre(proyecto.nombre)
+            setCliente(proyecto?.cliente)
             setDescripcion(proyecto.descripcion)
             setCategoria(proyecto.categoria)
             setFechaInicio(proyecto.fechaInicio?.split('T')[0])

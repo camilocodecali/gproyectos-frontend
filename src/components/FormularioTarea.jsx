@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import useProyectos from "../hooks/useProyectos";
+import useUsuario from "../hooks/useUsuario";
 import { useParams } from "react-router-dom";
 import Alerta from "./Alerta";
 
@@ -8,11 +9,14 @@ const ESTADO = ["Finalizado", "Progreso", "Retrasado"];
 const FormularioTarea = () => {
   const { proyecto, submitTarea, mostrarAlerta, alerta, tarea } = useProyectos();
 
+  const {colaboradores} = useUsuario()
+
+
   const params = useParams();
 
   const [id, setId] = useState(null)
   const [nombre, setNombre] = useState("");
-  const [colaboradores, setColaboradores] = useState("");
+  const [colaborador, setColaborador] = useState("");
   const [fechaInicio, setFechaInicio] = useState("");
   const [fechaEntrega, setFechaEntrega] = useState("");
   const [estado, setEstado] = useState("");
@@ -20,7 +24,6 @@ const FormularioTarea = () => {
   const [descripcion, setDescripcion] = useState("");
 
   useEffect(()=>{
-    console.log(tarea);
     if(params.id && tarea.nombre){
       setId(tarea._id)
       setNombre(tarea.nombre)
@@ -28,17 +31,16 @@ const FormularioTarea = () => {
       setEstado(tarea.estado)
       setFechaInicio(tarea.fechaInicio?.split('T')[0])
       setFechaEntrega(tarea.fechaEntrega?.split('T')[0])
-      setColaboradores(tarea.colaboradores)
+      setColaborador(tarea?.colaborador)
       setLinkRecursos(tarea.linkRecursos)
     }else{
-      console.log('Nuevo');
-      setId('')
+      setId(null)
       setNombre('')
       setDescripcion('')
       setEstado('')
       setFechaInicio('')
+      setColaborador('')
       setFechaEntrega('')
-      setColaboradores('')
       setLinkRecursos('')
     }
   },[tarea])
@@ -50,7 +52,7 @@ const FormularioTarea = () => {
     if (
       [
         nombre,
-        colaboradores,
+        colaborador,
         fechaInicio,
         fechaEntrega,
         estado,
@@ -65,25 +67,44 @@ const FormularioTarea = () => {
       return;
     }
     //TODO: hay que consultar responsables para cargarlos en el select
-    await submitTarea({
-      id,
-      nombre,
-      fechaInicio,
-      fechaEntrega,
-      estado,
-      linkRecursos,
-      descripcion,
-      proyecto: params.id,
-    });
+
+    if(tarea._id){
+      await submitTarea({
+        id,
+        nombre,
+        fechaInicio,
+        colaborador,
+        fechaEntrega,
+        estado,
+        linkRecursos,
+        descripcion,
+        proyecto: params.id,
+      });
+
+    }else {
+      await submitTarea({
+        nombre,
+        fechaInicio,
+        colaborador,
+        fechaEntrega,
+        estado,
+        linkRecursos,
+        descripcion,
+        proyecto: params.id,
+      });
+    }
+
+
 
     setId(null)
-    setNombre("");
-    setColaboradores("");
-    setFechaInicio("");
-    setFechaEntrega("");
-    setEstado("");
-    setLinkRecursos("");
-    setDescripcion("");
+    setNombre('')
+    setDescripcion('')
+    setEstado('')
+    setFechaInicio('')
+    setColaborador('')
+    setFechaEntrega('')
+    setLinkRecursos('')
+
   };
 
   const { msg } = alerta;
@@ -133,18 +154,23 @@ const FormularioTarea = () => {
         <div>
           <label
             className="text-gray-700 capitalize font-bold text-sm"
-            htmlFor="colaboradores"
+            htmlFor="colaborador"
           >
             Responsable
           </label>
-          <input
-            id="colaboradores"
-            type="text"
+          <select
+            id="colaborador"
             className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-lg"
-            placeholder="Seleccione los responsables"
-            value={colaboradores}
-            onChange={(e) => setColaboradores(e.target.value)}
-          />
+            value={colaborador}
+            onChange={(e) => setColaborador(e.target.value)}
+          >
+            <option value="">--Seleccionar--</option>
+            {colaboradores.map((opcion) => (
+              <option key={opcion._id} value={opcion._id}>
+                {opcion.nombre}
+              </option>
+            ))}
+          </select>
         </div>
       </div>
       <div className="mb-5 grid grid-cols-2 gap-4">

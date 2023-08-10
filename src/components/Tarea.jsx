@@ -4,10 +4,11 @@ import useProyectos from "../hooks/useProyectos";
 
 const Tarea = ({tarea}) => {
     const params = useParams()
-    const {colaboradores, estado, fechaEntrega, fechaInicio, linkRecursos, nombre } = tarea
+    const {colaborador, estado, fechaEntrega, fechaInicio, linkRecursos, nombre } = tarea
 
-    const {handleModalEliminarTarea, handleModalEstadoTarea} = useProyectos()
 
+    const {handleModalEliminarTarea, handleModalEstadoTarea, proyecto} = useProyectos()
+    console.log(tarea);
     return (
     <div className="border-b p-5 flex justify-between items-center">
       <div className="flex flex-col items-start">
@@ -16,7 +17,7 @@ const Tarea = ({tarea}) => {
             <p className={`${estado === "Finalizado" ? 'bg-green-300 text-green-700 text-bold' : estado === "Progreso" ? 'bg-orange-300 text-orange-700 text-bold' : 'bg-red-300 text-red-700 text-bold' } rounded-lg px-4 py-1 text-xs`}>{estado}</p>
         </div>
         <div className="flex mb-5">
-            <b>Responsables:</b><p>{colaboradores}</p>
+            <b>Responsables:</b><p>{colaborador.nombre}</p>
         </div>
         <div className="flex items-center gap-10 mb-5">
             <b>Fecha de inicio:</b><p className="mb-1 text-sm">{formatearFecha(fechaInicio)}</p>
