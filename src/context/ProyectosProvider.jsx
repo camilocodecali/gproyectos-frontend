@@ -2,6 +2,9 @@ import { useState, useEffect, createContext } from "react"
 import { useNavigate } from "react-router-dom"
 import clienteAxios from "../config/clienteAxios"
 import useAuth from "../hooks/useAuth";
+import io from "socket.io-client";
+
+let socket;
 
 
 const ProyectosContext = createContext();
@@ -45,7 +48,7 @@ const ProyectosProvider = ({children}) => {
         }
         obtenerProyectos()
 
-    },[auth])
+    },[])
 
     useEffect(()=>{
         const obtenerProyectosAsignados = async () => {
@@ -68,7 +71,11 @@ const ProyectosProvider = ({children}) => {
             }
         }
         obtenerProyectosAsignados()
-    }, [auth])
+    }, [])
+
+    useEffect(()=>{
+        socket = io(import.meta.env.VITE_BACKEND_URL)
+    },[])
 
     const mostrarAlerta = alerta => {
         setAlerta(alerta)
@@ -261,14 +268,15 @@ const ProyectosProvider = ({children}) => {
             }
 
             const { data } = await clienteAxios.post('/tareas', tarea, config)
-            //Agregar tarea al state
-            const proyectoActualizado = {...proyecto}
-            proyectoActualizado.tareas = [...proyecto.tareas, data]
-            setProyecto(proyectoActualizado)
+
             setAlerta({
                 msg: 'Tarea creada correctamente',
                 error: false
             })
+
+            //Socket io
+            socket.emit('nueva tarea', data)
+
             setTimeout(() => {
                 setAlerta({})
                 navigate(`/proyectos/${proyecto._id}`)
@@ -336,12 +344,16 @@ const ProyectosProvider = ({children}) => {
                 msg: 'Tarea Eliminada correctamente',
                 error:false
             })
+
+             //Socket
+            socket.emit('eliminar tarea', tarea)
+
+            setModalEliminarTarea(false)
             setTimeout(() => {
                 setAlerta({})
                 navigate(`/proyectos/${proyecto._id}`)
             }, 2500);
 
-            setModalEliminarTarea(false)
 
         } catch (error) {
             console.log(error);
@@ -362,6 +374,20 @@ const ProyectosProvider = ({children}) => {
 
     }
 
+    //Socket io
+    const submitTareasProyecto = (tarea) => {
+            //Agregar tarea al state
+            const proyectoActualizado = {...proyecto}
+            proyectoActualizado.tareas = [...proyectoActualizado.tareas, tarea]
+            setProyecto(proyectoActualizado)
+    }
+
+    const eliminarTareaProyecto = (tarea) => {
+        const proyectoActualizado = {...proyecto}
+        proyectoActualizado.tareas = proyectoActualizado.tareas.filter(tareaState =>
+            tareaState._id !== tarea._id)
+        setProyecto(proyectoActualizado)
+    }
 
   return (
     <ProyectosContext.Provider
@@ -386,7 +412,9 @@ const ProyectosProvider = ({children}) => {
             modalEstadoProyecto,
             handleModalEstadoProyecto,
             modalEstadoTarea,
-            handleModalEstadoTarea
+            handleModalEstadoTarea,
+            submitTareasProyecto,
+            eliminarTareaProyecto
         }}
     >
         {children}

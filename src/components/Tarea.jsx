@@ -8,7 +8,7 @@ const Tarea = ({tarea}) => {
 
 
     const {handleModalEliminarTarea, handleModalEstadoTarea, proyecto} = useProyectos()
-    console.log(tarea);
+
     return (
     <div className="border-b p-5 flex justify-between items-center">
       <div className="flex flex-col items-start">
