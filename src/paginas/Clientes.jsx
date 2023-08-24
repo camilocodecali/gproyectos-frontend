@@ -1,9 +1,10 @@
-import useAuth from "../hooks/useAuth"
+import { Link } from "react-router-dom";
+import TableClientes from "../components/TableClientes";
+import useUsuario from "../hooks/useUsuario";
 
 const Clientes = () => {
 
-  const { usuariosClientes, cargando } = useAuth()
-  console.log(usuariosClientes);
+  const { usuariosClientes, cargando } = useUsuario()
 
   if(cargando){
     return (
@@ -29,24 +30,25 @@ const Clientes = () => {
           <table className="table-auto w-full border-collapse text-left">
             <thead>
               <tr>
-                <th>1</th>
-                <th>1</th>
-                <th>1</th>
-                <th>1</th>
-                <th>1</th>
+                <th>Rázon social</th>
+                <th>Nit</th>
+                <th>Email</th>
+                <th>Persona de Contacto</th>
+                <th>Teléfono</th>
+                <th>Acción</th>
               </tr>
             </thead>
             <tbody>
-                <tr>
-                  <td>1</td>
-                  <td>1</td>
-                  <td>1</td>
-                  <td>1</td>
-                  <td>1</td>
-                </tr>
+              {usuariosClientes.length ?
+              usuariosClientes.map(usuarioCliente =>(
+                <TableClientes key={usuarioCliente._id} usuarioCliente={usuarioCliente} />
+              )) : <tr>No hay clientes</tr>}
             </tbody>
           </table>
         </div>
+      </div>
+      <div className="fixed bottom-10 right-10">
+        <Link to='/clientes/crear-cliente' className="bg-principal hover:bg-principalHover text-white text-lg font-bold py-8 px-4 rounded-full shadow-lg">+ Crear</Link>
       </div>
     </>
   )

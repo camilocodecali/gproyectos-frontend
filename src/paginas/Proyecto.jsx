@@ -13,7 +13,7 @@ let socket;
 
 const Proyecto = () => {
   const params = useParams();
-  const { obtenerProyecto, cargando, proyecto, submitTareasProyecto, eliminarTareaProyecto } = useProyectos();
+  const { obtenerProyecto, cargando, proyecto, submitTareasProyecto, eliminarTareaProyecto, actualizarTareaProyecto } = useProyectos();
 
   useEffect(() => {
     obtenerProyecto(params.id);
@@ -34,6 +34,12 @@ const Proyecto = () => {
     socket.on('tarea eliminada', tareaEliminada =>{
       if(tareaEliminada.proyecto === proyecto._id){
         eliminarTareaProyecto(tareaEliminada)
+      }
+    })
+
+    socket.on('tarea actualizada', tareaActualizada =>{
+      if(tareaActualizada.proyecto._id === proyecto._id){
+        actualizarTareaProyecto(tareaActualizada)
       }
     })
   })

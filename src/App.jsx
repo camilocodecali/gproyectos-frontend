@@ -17,6 +17,7 @@ import EditarProyecto from "./paginas/EditarProyecto"
 import NuevaTarea from "./paginas/NuevaTarea"
 import EditarTarea from "./paginas/EditarTarea"
 import PreviewTarea from "./paginas/PreviewTarea"
+import NuevoCliente from "./paginas/NuevoCliente"
 
 import { AuthProvider } from "./context/AuthProvider"
 import { ProyectosProvider } from "./context/ProyectosProvider"
@@ -52,6 +53,7 @@ function App() {
 
               <Route path="/clientes" element={<RutaProtegida/>}>
                 <Route index element={<Clientes/>} />
+                <Route path="crear-cliente" element={<NuevoCliente/>} />
               </Route>
 
               

@@ -6,7 +6,7 @@ import useProyectos from "../hooks/useProyectos";
 const ESTADO = ["Finalizado", "Progreso", "Retrasado"];
 
 const ModalEstadoTarea = () => {
-  const { modalEstadoTarea, handleModalEstadoTarea, tarea, mostrarAlerta, alerta, submitTarea } =
+  const { modalEstadoTarea, handleModalEstadoTarea, tarea, mostrarAlerta, submitTarea } =
     useProyectos();
 
     const [estado, setEstado ] = useState('')

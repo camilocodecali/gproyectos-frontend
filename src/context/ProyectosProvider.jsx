@@ -308,6 +308,9 @@ const ProyectosProvider = ({children}) => {
                 error: false
             })
 
+            //Socket io
+            socket.emit('actualizar tarea', data)
+
 
             setTimeout(()=>{
                 setAlerta({})
@@ -389,12 +392,22 @@ const ProyectosProvider = ({children}) => {
         setProyecto(proyectoActualizado)
     }
 
+    const actualizarTareaProyecto = tarea => {
+            //Agregar tarea al state
+            const proyectoActualizado = {...proyecto}
+            proyectoActualizado.tareas = proyectoActualizado.tareas.map( tareaState =>
+                tareaState._id === tarea._id ? tarea : tareaState)
+            setProyecto(proyectoActualizado)
+    }
+
+
   return (
     <ProyectosContext.Provider
         value={{
             proyectos,
             mostrarAlerta,
             alerta,
+            cargando,
             submitProyecto,
             proyectosAsignados,
             obtenerProyecto,
@@ -414,7 +427,8 @@ const ProyectosProvider = ({children}) => {
             modalEstadoTarea,
             handleModalEstadoTarea,
             submitTareasProyecto,
-            eliminarTareaProyecto
+            eliminarTareaProyecto,
+            actualizarTareaProyecto
         }}
     >
         {children}

@@ -29,7 +29,6 @@ const UsuarioProvider = ({children}) => {
                 }
                 const {data} = await clienteAxios('/usuarios/clientes', config)
                 setUsuariosClientes(data)
-                console.log(usuariosClientes);
                 setCargando(false)
       } catch (error) {
         console.log(error);

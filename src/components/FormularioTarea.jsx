@@ -10,7 +10,7 @@ const FormularioTarea = () => {
   const { proyecto, submitTarea, mostrarAlerta, alerta, tarea } = useProyectos();
 
   const {colaboradores} = useUsuario()
-
+console.log(colaboradores);
 
   const params = useParams();
 
