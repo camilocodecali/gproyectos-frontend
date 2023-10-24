@@ -1,4 +1,5 @@
 import { createContext, useEffect, useState } from "react"
+import { useNavigate } from "react-router-dom";
 import clienteAxios from "../config/clienteAxios";
 import useAuth from "../hooks/useAuth";
 
@@ -11,8 +12,11 @@ const UsuarioProvider = ({children}) => {
   const [cargando, setCargando] = useState(false)
   const [clientes, setClientes] = useState([])
   const [usuariosClientes, setUsuariosClientes] = useState([])
+  const [alerta, setAlerta] = useState({})
 
   const {auth} = useAuth()
+
+  const navigate = useNavigate()
 
   useEffect(()=>{
     const obtenerTodosClientes = async() => {
@@ -100,6 +104,47 @@ const UsuarioProvider = ({children}) => {
     obtenerUsuariosCliente()
   },[auth])
 
+  const mostrarAlerta = alerta => {
+    setAlerta(alerta)
+
+    setTimeout(()=>{
+        setAlerta('')
+    }, 2500)
+}
+
+const submitCliente =  async cliente => {
+  await nuevoCliente(cliente)
+}
+
+const nuevoCliente = async cliente => {
+  try {
+    const token = localStorage.getItem('token');
+    if(!token) return
+    
+    const config = {
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`
+        }
+    }
+
+    const { data } = await clienteAxios.post('/usuarios', cliente, config)
+    setUsuariosClientes([...clientes, data])
+    setAlerta({
+      msg: 'Cliente creado correctamente',
+      error: false
+  })
+
+    setTimeout(()=>{
+      setAlerta({})
+      navigate('/clientes')
+    }, 2500)
+
+} catch (error) {
+    console.log(error);
+}
+}
+
 
 
   return (
@@ -109,7 +154,10 @@ const UsuarioProvider = ({children}) => {
         lideres,
         clientes,
         usuariosClientes,
-        cargando
+        cargando,
+        mostrarAlerta,
+        alerta,
+        submitCliente
       }}
     >
       {children}

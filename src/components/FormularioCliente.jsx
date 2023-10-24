@@ -1,10 +1,56 @@
-import React from 'react'
+import { useState, useEffect } from "react"
+import useUsuario from "../hooks/useUsuario"
+import Alerta from "./Alerta"
 
 const FormularioCliente = () => {
+
+    const [nombre, setNombre] = useState('')
+    const [password, setPassword] = useState('')
+    const [email, setEmail] = useState('')
+    const [telefono, setTelefono] = useState('')
+    const [cargo, setCargo] = useState('Cliente')
+    const [identificacion, setIdentificacion] = useState('')
+    const [personaContacto, setPersonaContacto] = useState('')
+    const [notaCliente, setNotaCliente] = useState('')
+
+    const {mostrarAlerta, alerta, submitCliente}= useUsuario()
+
+    useEffect(()=>{
+
+    })
+
+    const handleSubmit = async e => {
+        e.preventDefault();
+     
+        if([nombre, email, telefono, identificacion, personaContacto, notaCliente].includes('')){
+            mostrarAlerta({
+                msg: ' Todos los campos son Obligatorios',
+                error: true
+            });
+            return
+        }
+
+    // Pasar datos al provider
+    await submitCliente({nombre, password, email, telefono, cargo, identificacion, personaContacto, notaCliente})
+    setNombre('');
+    setPassword('');
+    setEmail('');
+    setTelefono('');
+    setCargo('');
+    setIdentificacion('');
+    setPersonaContacto('');
+    setNotaCliente('');
+    }
+
+
+
+    const {msg} = alerta;
   return (
     <form 
         className="bg-white shadow py-10 px-5 w-full h-full rounded-lg"        
+        onSubmit={handleSubmit}
     >
+    {msg && <Alerta alerta={alerta}/>}
         <div className="mb-5 grid grid-cols-2 gap-4">
             <div>
                 <label
@@ -16,18 +62,26 @@ const FormularioCliente = () => {
                     type="text"
                     className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-lg"
                     placeholder="Razón social de la empresa"
+                    value={nombre}
+                    onChange={e => setNombre(e.target.value)}
                 />
             </div>
             <div>
                 <label
                     className="text-gray-700 capitalize font-bold text-sm"
-                    htmlFor="nit"
+                    htmlFor="identificacion"
                 >Nit</label>
                 <input
-                    id="nit"
+                    id="identificacion"
                     type="number"
                     className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-lg"
                     placeholder="Nit de la empresa"
+                    value={identificacion}
+                    onChange={e => {
+                        setIdentificacion(e.target.value)
+                        setPassword(e.target.value)
+                    } }
+                    
                 />
             </div>
         </div>
@@ -42,6 +96,8 @@ const FormularioCliente = () => {
                     type="email"
                     className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-lg"
                     placeholder="Ingrese el Email"
+                    value={email}
+                    onChange={e => setEmail(e.target.value)}
                 />
             </div>
             <div>
@@ -54,6 +110,8 @@ const FormularioCliente = () => {
                     type="number"
                     className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-lg"
                     placeholder="Teléfono de la empresa"
+                    value={telefono}
+                    onChange={e => setTelefono(e.target.value)}
                 />
             </div>
         </div>
@@ -68,6 +126,8 @@ const FormularioCliente = () => {
                     type="text"
                     className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-lg"
                     placeholder="Ingrese el nombre de la persona de contacto"
+                    value={personaContacto}
+                    onChange={e => setPersonaContacto(e.target.value)}
                 />
             </div>
         </div>
@@ -81,6 +141,8 @@ const FormularioCliente = () => {
                 id="notaCliente"
                 className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
                 placeholder="Escribe una nota para el cliente"
+                value={notaCliente}
+                onChange={e => setNotaCliente(e.target.value)}
 
             />
         </div>

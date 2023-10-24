@@ -12,7 +12,7 @@ const TableClientes = ({usuarioCliente}) => {
                   <td className="border-b border-slate-300 p-3">{personaContacto}</td>
                   <td className="border-b border-slate-300 p-3">{telefono}</td>
                   <td className="border-b border-slate-300 p-3">
-                  <Link className="bg-principal hover:bg-principalHover px-0 md:px-2 py-2 rounded-lg text-white text-xs" to={``}>Ver Proyecto</Link>
+                  <Link className="bg-principal hover:bg-principalHover px-0 md:px-2 py-2 rounded-lg text-white text-xs" to={``}>Ver Cliente</Link>
                   </td>
                 </tr>
     </>
