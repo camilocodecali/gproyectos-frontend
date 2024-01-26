@@ -13,10 +13,35 @@ const UsuarioProvider = ({children}) => {
   const [clientes, setClientes] = useState([])
   const [usuariosClientes, setUsuariosClientes] = useState([])
   const [alerta, setAlerta] = useState({})
+  const [usuarioCliente, setUsuarioCLiente] = useState([])
+  const [usuariosApp, setUsuarioApp] = useState([])
 
   const {auth} = useAuth()
 
   const navigate = useNavigate()
+
+  useEffect(()=>{
+    const obtenerTodos = async() => {
+      setCargando(true)
+      try {
+        const token = localStorage.getItem('token')
+                if(!token) return
+
+                const config = {
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${token}`
+                    }
+                }
+                const {data} = await clienteAxios('/usuarios', config)
+                setUsuarioApp(data)
+                setCargando(false)
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    obtenerTodos()
+  },[auth])
 
   useEffect(()=>{
     const obtenerTodosClientes = async() => {
@@ -145,7 +170,29 @@ const nuevoCliente = async cliente => {
 }
 }
 
+const obtenerUsuarioCliente = async id => {
+  setCargando(true)
+  try {
+      const token = localStorage.getItem('token');
+      if(!token) return
+      
+      const config = {
+          headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`
+          }
+      }
 
+      const { data } = await clienteAxios(`/usuarios/clientes/${id}`, config)
+      setUsuarioCLiente(data)
+       setCargando(false)
+  } catch (error) {
+      setAlerta({
+          msg: error.response.data.msg,
+          error:true
+      })
+  }
+}
 
   return (
     <UsuarioContext.Provider
@@ -157,7 +204,11 @@ const nuevoCliente = async cliente => {
         cargando,
         mostrarAlerta,
         alerta,
-        submitCliente
+        submitCliente,
+        usuarioCliente,
+        obtenerUsuarioCliente,
+        usuariosApp
+        
       }}
     >
       {children}

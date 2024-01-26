@@ -30,14 +30,8 @@ const PreviewTarea = () => {
             to={`/proyectos/editar-tarea/${params.id}`}
             className="bg-sky-500 py-2 px-4 rounded-lg text-white hover:bg-sky-700 font-bold"
           >
-            Editar Tarea
+            Editar Cliente
           </Link>
-          <button
-            onClick={()=>handleModalEstadoTarea(tarea)}
-            className="border-2 border-yellow-500 text-yellow-500  py-2 px-4 rounded-lg  hover:bg-yellow-500 hover:text-white font-bold"
-          >
-            Editar Estado
-          </button>
           <button
             onClick={() => handleModalEliminarTarea(tarea)}
             className="border-2 border-red-500 text-red-500  py-2 px-4 rounded-lg  hover:bg-red-500 hover:text-white font-bold"

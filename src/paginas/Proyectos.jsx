@@ -9,6 +9,7 @@ import TableProyectos from "../components/TableProyectos";
 const Proyectos = () => {
 
   const { proyectos } = useProyectos()
+  console.log(proyectos);
 
   return (
     <>
@@ -36,7 +37,7 @@ const Proyectos = () => {
             Ordenar por:
             <form>
               <select className="border border-slate-400 px-4 py-1 rounded-lg">
-                <option>Opcion</option>
+                <option>Opción</option>
               </select>
             </form>
           </div>

@@ -18,6 +18,9 @@ import NuevaTarea from "./paginas/NuevaTarea"
 import EditarTarea from "./paginas/EditarTarea"
 import PreviewTarea from "./paginas/PreviewTarea"
 import NuevoCliente from "./paginas/NuevoCliente"
+import EditarCliente from "./paginas/EditarCliente"
+import Cliente from "./paginas/Cliente"
+import NuevoUsuario from "./paginas/NuevoUsuario"
 
 import { AuthProvider } from "./context/AuthProvider"
 import { ProyectosProvider } from "./context/ProyectosProvider"
@@ -54,11 +57,14 @@ function App() {
               <Route path="/clientes" element={<RutaProtegida/>}>
                 <Route index element={<Clientes/>} />
                 <Route path="crear-cliente" element={<NuevoCliente/>} />
+                <Route path=":id" element={<Cliente/>} />
+                <Route path="editar/:id" element={<EditarCliente/>} />
               </Route>
 
               
               <Route path="/usuarios" element={<RutaProtegida/>}>
                 <Route index element={<Usuarios/>} />
+                <Route path="crear-usuario" element={<NuevoUsuario/>} />
               </Route>
 
             </Routes>
