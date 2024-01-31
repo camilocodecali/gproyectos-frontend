@@ -5,7 +5,7 @@ import useUsuario from "../hooks/useUsuario";
 
 const Usuarios = () => {
   const {  cargando, usuariosApp } = useUsuario()
-  console.log(usuariosApp);
+ 
   return (
     <>
       <h1 className="text-4xl">Usuarios</h1>

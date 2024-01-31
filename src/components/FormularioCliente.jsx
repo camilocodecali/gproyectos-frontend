@@ -1,9 +1,12 @@
 import { useState, useEffect } from "react"
+import { useParams } from "react-router-dom"
+import useAuth from "../hooks/useAuth"
 import useUsuario from "../hooks/useUsuario"
 import Alerta from "./Alerta"
 
 const FormularioCliente = () => {
 
+    const [id, setId] = useState(null)
     const [nombre, setNombre] = useState('')
     const [password, setPassword] = useState('')
     const [email, setEmail] = useState('')
@@ -13,16 +16,34 @@ const FormularioCliente = () => {
     const [personaContacto, setPersonaContacto] = useState('')
     const [notaCliente, setNotaCliente] = useState('')
 
-    const {mostrarAlerta, alerta, submitCliente}= useUsuario()
+    const params = useParams()
+
+    const {mostrarAlerta, alerta, submitCliente, usuarioCliente}= useUsuario()
+
+    const {auth} = useAuth()
+
 
     useEffect(()=>{
+        if(params.id && usuarioCliente.nombre){
+            setId(usuarioCliente._id)
+            setNombre(usuarioCliente.nombre)
+            setEmail(usuarioCliente.email)
+            setPassword(usuarioCliente.password)
+            setTelefono(usuarioCliente.telefono)
+            setCargo(usuarioCliente.cargo)
+            setIdentificacion(usuarioCliente.identificacion)
+            setPersonaContacto(usuarioCliente.personaContacto)
+            setNotaCliente(usuarioCliente.notaCliente)
+        }else{
+            console.log("nuevo");
+        }
 
-    })
+    },[usuarioCliente])
 
     const handleSubmit = async e => {
         e.preventDefault();
      
-        if([nombre, email, telefono, identificacion, personaContacto, notaCliente].includes('')){
+        if([nombre, email, telefono, identificacion, personaContacto, notaCliente, id].includes('')){
             mostrarAlerta({
                 msg: ' Todos los campos son Obligatorios',
                 error: true
@@ -31,7 +52,8 @@ const FormularioCliente = () => {
         }
 
     // Pasar datos al provider
-    await submitCliente({nombre, password, email, telefono, cargo, identificacion, personaContacto, notaCliente})
+    await submitCliente({nombre, password, email, telefono, cargo, identificacion, personaContacto, notaCliente, id})
+    setId(null);
     setNombre('');
     setPassword('');
     setEmail('');
@@ -150,7 +172,7 @@ const FormularioCliente = () => {
             <button className="border-gray-300 border-2 rounded-lg px-10 py-2">Cancelar</button>
             <input 
             type="submit"
-
+            value={id ? 'Editar' : 'Crear Proyecto'}
             className="bg-principal hover:bg-principalHover px-10 py-2 capitalize font-bold text-white rounded-lg cursor-pointer transition-colors"
             />
         </div>

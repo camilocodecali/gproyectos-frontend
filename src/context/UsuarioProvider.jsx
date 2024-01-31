@@ -15,6 +15,7 @@ const UsuarioProvider = ({children}) => {
   const [alerta, setAlerta] = useState({})
   const [usuarioCliente, setUsuarioCLiente] = useState([])
   const [usuariosApp, setUsuarioApp] = useState([])
+  const [modalEliminarCliente, setModalEliminarCliente] = useState(false)
 
   const {auth} = useAuth()
 
@@ -127,7 +128,7 @@ const UsuarioProvider = ({children}) => {
       }
     }
     obtenerUsuariosCliente()
-  },[auth])
+  },[])
 
   const mostrarAlerta = alerta => {
     setAlerta(alerta)
@@ -138,7 +139,12 @@ const UsuarioProvider = ({children}) => {
 }
 
 const submitCliente =  async cliente => {
-  await nuevoCliente(cliente)
+  if(cliente.id){
+    await editarCliente(cliente)
+  }else{
+    await nuevoCliente(cliente)
+  }
+
 }
 
 const nuevoCliente = async cliente => {
@@ -154,7 +160,7 @@ const nuevoCliente = async cliente => {
     }
 
     const { data } = await clienteAxios.post('/usuarios', cliente, config)
-    setUsuariosClientes([...clientes, data])
+    setUsuariosClientes([...usuariosClientes, data])
     setAlerta({
       msg: 'Cliente creado correctamente',
       error: false
@@ -168,6 +174,34 @@ const nuevoCliente = async cliente => {
 } catch (error) {
     console.log(error);
 }
+}
+
+const editarCliente = async cliente => {
+  try {
+    const token = localStorage.getItem('token');
+    if(!token) return
+    
+    const config = {
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`
+        }
+    }
+    const { data } = await clienteAxios.put(`/usuarios/clientes/${cliente.id}`, cliente, config)
+    const clientesActualizados = usuariosClientes.map(clienteState => clienteState._id === data._id ? data : clienteState)
+    setUsuariosClientes(clientesActualizados)
+    setAlerta({
+      msg: ' Cliente Actualizado correctamente',
+      error: false
+  })
+  setTimeout(()=>{
+      setAlerta({})
+      navigate('/clientes');
+  }, 2500)
+
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 const obtenerUsuarioCliente = async id => {
@@ -194,6 +228,41 @@ const obtenerUsuarioCliente = async id => {
   }
 }
 
+const handleModalEliminarCliente = cliente => {
+  setUsuarioCLiente(cliente)
+  setModalEliminarCliente(!modalEliminarCliente)
+  
+}
+
+const eliminarCliente = async () => {
+  try {
+    const token = localStorage.getItem('token');
+            if(!token) return
+            
+            const config = {
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`
+                }
+            }
+            const { data } = await clienteAxios.delete(`/usuarios/clientes/${usuarioCliente._id}`, config)
+            //sincronizar datos
+            const clientesActualizados = usuariosClientes.filter(clienteState => clienteState._id !== usuarioCliente._id)
+            setUsuariosClientes(clientesActualizados)
+            setAlerta({
+              msg: data.msg,
+              error:false
+          })
+          setModalEliminarCliente(false)
+          setTimeout(() => {
+            setAlerta({})
+            navigate('/clientes')
+        }, 2000);
+  } catch (error) {
+    console.log(error);
+  }
+}
+
   return (
     <UsuarioContext.Provider
       value={{
@@ -207,7 +276,10 @@ const obtenerUsuarioCliente = async id => {
         submitCliente,
         usuarioCliente,
         obtenerUsuarioCliente,
-        usuariosApp
+        usuariosApp,
+        handleModalEliminarCliente,
+        modalEliminarCliente,
+        eliminarCliente
         
       }}
     >

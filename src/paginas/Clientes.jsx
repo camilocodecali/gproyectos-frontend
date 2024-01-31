@@ -42,7 +42,7 @@ const Clientes = () => {
               {usuariosClientes.length ?
               usuariosClientes.map(usuarioCliente =>(
                 <TableClientes key={usuarioCliente._id} usuarioCliente={usuarioCliente} />
-              )) : <tr>No hay clientes</tr>}
+              )) : <tr><td>No hay clientes</td></tr>}
             </tbody>
           </table>
         </div>
