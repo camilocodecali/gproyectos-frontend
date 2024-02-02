@@ -21,6 +21,7 @@ import NuevoCliente from "./paginas/NuevoCliente"
 import EditarCliente from "./paginas/EditarCliente"
 import Cliente from "./paginas/Cliente"
 import NuevoUsuario from "./paginas/NuevoUsuario"
+import Usuario from "./paginas/Usuario"
 
 import { AuthProvider } from "./context/AuthProvider"
 import { ProyectosProvider } from "./context/ProyectosProvider"
@@ -65,6 +66,7 @@ function App() {
               <Route path="/usuarios" element={<RutaProtegida/>}>
                 <Route index element={<Usuarios/>} />
                 <Route path="crear-usuario" element={<NuevoUsuario/>} />
+                <Route path=":id" element={<Usuario/>} />
               </Route>
 
             </Routes>

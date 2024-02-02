@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import useProyectos from "../hooks/useProyectos"
 import { Link } from "react-router-dom";
 import TableProyectos from "../components/TableProyectos";
@@ -9,7 +8,6 @@ import TableProyectos from "../components/TableProyectos";
 const Proyectos = () => {
 
   const { proyectos } = useProyectos()
-  console.log(proyectos);
 
   return (
     <>

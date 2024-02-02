@@ -37,7 +37,7 @@ const Usuarios = () => {
             {usuariosApp.length ?
               usuariosApp.map(usuarioApp =>(
                 <TableUsuarios key={usuarioApp._id} usuarioApp={usuarioApp} />
-              )) : <tr>No hay clientes</tr>}
+              )) : <tr><td>No hay clientes</td></tr>}
             </tbody>
           </table>
         </div>
