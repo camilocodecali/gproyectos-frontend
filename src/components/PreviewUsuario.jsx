@@ -1,10 +1,16 @@
-import { Link } from "react-router-dom"
+import { Link, useParams } from "react-router-dom"
 import whatsapp from "/whatsapp.png";
 import correo from "/email.png";
+import useUsuario from "../hooks/useUsuario";
 
 const PreviewUsuario = ({usuarioApp}) => {
-  console.log(usuarioApp);
-  const {cargo, email, identificacion, nombre, telefono, fechaIngreso }  = usuarioApp
+
+  const params = useParams()
+  const { cargando, handleModalEliminarUsuario } = useUsuario();
+
+  const {cargo, email, identificacion, nombre, telefono, fechaIngreso, _id }  = usuarioApp
+  
+  
   return (
     <>
         <div className="bg-white w-full shadow mt-10 rounded-lg p-5">
@@ -14,12 +20,13 @@ const PreviewUsuario = ({usuarioApp}) => {
           </h1>
           <div className="flex items-center gap-4">
             <Link
-              to={`/usuarios/editar/`}
+              to={`/usuarios/editar/${_id}`}
               className="bg-sky-500 py-2 px-4 rounded-lg text-white hover:bg-sky-700 font-bold"
             >
               Editar Usuario
             </Link>
             <button
+              onClick={()=> handleModalEliminarUsuario(usuarioApp)}
               className="border-2 border-red-500 text-red-500  py-2 px-4 rounded-lg  hover:bg-red-500 hover:text-white font-bold">
               Eliminar
             </button>

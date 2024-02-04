@@ -40,7 +40,7 @@ const Registrar = () => {
 
     if(password.length < 6){
       setAlerta({
-        msg: "Las password es muy carto, debe ser superior a 6 caracteres",
+        msg: "Las password es muy corta, debe ser superior a 6 caracteres",
         error: true
       })
 

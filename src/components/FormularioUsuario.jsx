@@ -1,33 +1,44 @@
 import { useState, useEffect } from "react"
+import { useParams } from "react-router-dom"
 import useUsuario from "../hooks/useUsuario"
 import Alerta from "./Alerta"
 
-
-const CARGO = ["Lider", "Colaborador", "Admin", "Cliente"]
+const CARGO = ["Lider", "Colaborador", "Admin"]
 
 const FormularioUsuario = () => {
 
-    const [nombre, setNombre] = useState('')
-    const [password, setPassword] = useState('')
-    const [email, setEmail] = useState('')
-    const [telefono, setTelefono] = useState('')
-    const [cargo, setCargo] = useState('')
-    const [identificacion, setIdentificacion] = useState('')
-    const [personaContacto, setPersonaContacto] = useState('')
-    const [notaCliente, setNotaCliente] = useState('')
-    const [fechaIngreso, setFechaIngreso] = useState('')
-    const [repetirPassword, setRepetirPassword] = useState('')
+  const [id, setId] = useState(null)
+  const [nombre, setNombre] = useState('')
+  const [password, setPassword] = useState('')
+  const [email, setEmail] = useState('')
+  const [telefono, setTelefono] = useState('')
+  const [cargo, setCargo] = useState('')
+  const [identificacion, setIdentificacion] = useState('')
+  const [fechaIngreso, setFechaIngreso] = useState('')
+  const [ repetirPassword, setRepetirPassword ] = useState('')
 
-    const {mostrarAlerta, alerta, submitCliente}= useUsuario()
+  const params = useParams()
+
+    const {mostrarAlerta, alerta, submitUsuario, usuarioApp }= useUsuario()
 
     useEffect(()=>{
+      if(params.id && usuarioApp.nombre){
+        setId(usuarioApp._id)
+        setNombre(usuarioApp.nombre)
+        setEmail(usuarioApp.email)
+        setTelefono(usuarioApp.telefono)
+        setCargo(usuarioApp.cargo)
+        setIdentificacion(usuarioApp.identificacion)
 
-    })
+      }else{
+        console.log("nuevo");
+      }
+    }, [usuarioApp])
 
     const handleSubmit = async e => {
         e.preventDefault();
      
-        if([nombre, email, telefono, identificacion, personaContacto, notaCliente].includes('')){
+        if([nombre, email , telefono , cargo , fechaIngreso , identificacion, password, repetirPassword ].includes('')){
             mostrarAlerta({
                 msg: ' Todos los campos son Obligatorios',
                 error: true
@@ -35,16 +46,31 @@ const FormularioUsuario = () => {
             return
         }
 
-    // Pasar datos al provider
-    await submitCliente({nombre, password, email, telefono, cargo, identificacion, personaContacto, notaCliente})
-    setNombre('');
-    setPassword('');
-    setEmail('');
-    setTelefono('');
-    setCargo('');
-    setIdentificacion('');
-    setPersonaContacto('');
-    setNotaCliente('');
+        if(password !== repetirPassword){
+          mostrarAlerta({
+            msg: 'Las contraseñas no son iguales',
+            error: true
+          })
+        }
+
+        if(password.length < 6){
+          mostrarAlerta ({
+            msg: 'La password es muy corta, debe ser superior a 6 caracteres'
+          })
+        }
+
+        //pasa datos al provider
+        await submitUsuario({nombre, email , telefono , cargo , fechaIngreso , identificacion, password, id})
+        setId(null);
+        setNombre('');
+        setPassword('');
+        setEmail('');
+        setTelefono('');
+        setCargo('');
+        setIdentificacion('');
+        setPassword('');
+        setRepetirPassword('');
+        setFechaIngreso('');
     }
 
 
@@ -80,11 +106,10 @@ const FormularioUsuario = () => {
                     id="identificacion"
                     type="number"
                     className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-lg"
-                    placeholder="Nit de la empresa"
+                    placeholder="Número de identificación"
                     value={identificacion}
                     onChange={e => {
                         setIdentificacion(e.target.value)
-                        setPassword(e.target.value)
                     } }
                     
                 />
@@ -195,7 +220,7 @@ const FormularioUsuario = () => {
             <button className="border-gray-300 border-2 rounded-lg px-10 py-2">Cancelar</button>
             <input 
             type="submit"
-
+            value={id ? 'Editar' : 'Crear Usuario'}
             className="bg-principal hover:bg-principalHover px-10 py-2 capitalize font-bold text-white rounded-lg cursor-pointer transition-colors"
             />
         </div>

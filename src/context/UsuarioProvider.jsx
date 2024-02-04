@@ -16,6 +16,7 @@ const UsuarioProvider = ({ children }) => {
   const [usuariosApp, setUsuariosApp] = useState([]);
   const [usuarioApp, setUsuarioApp] = useState([]);
   const [modalEliminarCliente, setModalEliminarCliente] = useState(false);
+  const [modalEliminarUsuario, setModalEliminarUsuario] = useState(false);
 
   const { auth } = useAuth();
 
@@ -294,6 +295,110 @@ const UsuarioProvider = ({ children }) => {
     }
   };
 
+  const submitUsuario = async (usuario) => {
+    if (usuario.id) {
+      await editarUsuarioApp(usuario);
+    } else {
+      await nuevoUsuarioApp(usuario)
+    }
+
+  }
+
+  const nuevoUsuarioApp = async (usuario) => {
+    try {
+      const token = localStorage.getItem("token")
+      if(!token) return;
+
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`
+        },
+      };
+
+      const {data} = await clienteAxios.post("/usuarios", usuario, config);
+      setUsuariosApp([...usuariosApp, data]);
+      setAlerta({
+        msg: "Usuario creado correctamente",
+        error:false
+      });
+      setTimeout(()=>{
+        setAlerta({});
+        navigate("/usuarios");
+      }, 2500);
+
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  const editarUsuarioApp = async (usuario) => {
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) return;
+
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      };
+
+      const {data} = await clienteAxios.put(`/usuarios/usuario/${usuario.id}`, usuario, config);
+      const usuariosAppActualizados = usuariosApp.map((usuarioState)=> usuarioState._id === data._id? data : usuarioState);
+      setUsuariosApp(usuariosAppActualizados);
+      setAlerta({
+        msg: "Usuario Actualizado Correctamente",
+        error: false
+      })
+      setTimeout(()=>{
+        setAlerta({});
+        navigate("/usuarios");
+      }, 2500)
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  const handleModalEliminarUsuario = async (usuario) => {
+    setUsuarioApp(usuario)
+    setModalEliminarUsuario(!modalEliminarUsuario)
+  }
+
+  const eliminarUsuario = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) return;
+
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      };
+      const { data } = await clienteAxios.delete(
+        `/usuarios/usuario/${usuarioApp._id}`,
+        config
+      );
+      //sincronizar datos
+      const usuariosActualizados = usuariosApp.filter(
+        (usuarioState) => usuarioState._id !== usuarioApp._id
+      );
+      setUsuariosApp(usuariosActualizados);
+      setAlerta({
+        msg: data.msg,
+        error: false,
+      });
+      setModalEliminarUsuario(false);
+      setTimeout(() => {
+        setAlerta({});
+        navigate("/usuarios");
+      }, 2000);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   return (
     <UsuarioContext.Provider
       value={{
@@ -312,7 +417,12 @@ const UsuarioProvider = ({ children }) => {
         modalEliminarCliente,
         eliminarCliente,
         obtenerUsuarioApp,
-        usuarioApp
+        usuarioApp,
+        submitUsuario,
+        editarUsuarioApp,
+        handleModalEliminarUsuario,
+        modalEliminarUsuario,
+        eliminarUsuario
       }}
     >
       {children}

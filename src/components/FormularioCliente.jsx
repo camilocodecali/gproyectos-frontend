@@ -101,7 +101,6 @@ const FormularioCliente = () => {
                     value={identificacion}
                     onChange={e => {
                         setIdentificacion(e.target.value)
-                        setPassword(e.target.value)
                     } }
                     
                 />
@@ -172,7 +171,7 @@ const FormularioCliente = () => {
             <button className="border-gray-300 border-2 rounded-lg px-10 py-2">Cancelar</button>
             <input 
             type="submit"
-            value={id ? 'Editar' : 'Crear Proyecto'}
+            value={id ? 'Editar' : 'Crear Cliente'}
             className="bg-principal hover:bg-principalHover px-10 py-2 capitalize font-bold text-white rounded-lg cursor-pointer transition-colors"
             />
         </div>

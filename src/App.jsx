@@ -22,6 +22,7 @@ import EditarCliente from "./paginas/EditarCliente"
 import Cliente from "./paginas/Cliente"
 import NuevoUsuario from "./paginas/NuevoUsuario"
 import Usuario from "./paginas/Usuario"
+import EditarUsuario from "./paginas/EditarUsuario"
 
 import { AuthProvider } from "./context/AuthProvider"
 import { ProyectosProvider } from "./context/ProyectosProvider"
@@ -67,6 +68,8 @@ function App() {
                 <Route index element={<Usuarios/>} />
                 <Route path="crear-usuario" element={<NuevoUsuario/>} />
                 <Route path=":id" element={<Usuario/>} />
+                <Route path="editar/:id" element={<EditarUsuario/>} />
+
               </Route>
 
             </Routes>
