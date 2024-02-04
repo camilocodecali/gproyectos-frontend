@@ -1,13 +1,34 @@
 import useProyectos from "../hooks/useProyectos"
+import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import TableProyectos from "../components/TableProyectos";
+import { io } from "socket.io-client";
 
-
-
+let socket;
 
 const Proyectos = () => {
 
-  const { proyectos } = useProyectos()
+  const { proyectos, submitProyectoSocket, actualizarProyectoSocket, eliminarProyectoSocket } = useProyectos()
+
+  useEffect(()=>{
+    socket = io(import.meta.env.VITE_BACKEND_URL)
+  },[])
+
+  useEffect(()=> {
+    socket.on('proyecto agregado', proyectoNuevo =>{
+      submitProyectoSocket(proyectoNuevo)
+    })
+
+    socket.on('proyecto actualizado', proyectoActualizado =>{
+      actualizarProyectoSocket(proyectoActualizado)
+    })
+
+    socket.on('proyecto eliminado', proyectoEliminado =>{
+      eliminarProyectoSocket(proyectoEliminado)
+    })
+
+
+  })
 
   return (
     <>
